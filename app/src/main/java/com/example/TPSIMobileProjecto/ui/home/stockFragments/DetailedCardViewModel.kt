@@ -1,4 +1,4 @@
-package com.example.TPSIMobileProjecto.ui.Home.StockFragments
+package com.example.TPSIMobileProjecto.ui.home.stockFragments
 
 import androidx.lifecycle.ViewModel
 

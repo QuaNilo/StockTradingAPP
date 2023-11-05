@@ -1,4 +1,4 @@
-package com.example.TPSIMobileProjecto.ui.Home.StockFragments
+package com.example.TPSIMobileProjecto.ui.home.stockFragments
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -23,8 +23,8 @@ class SimpleCardFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_simple_card, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(SimpleCardViewModel::class.java)
         // TODO: Use the ViewModel
     }

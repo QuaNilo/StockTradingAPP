@@ -8,11 +8,19 @@ import kotlinx.coroutines.launch
 import retrofit.RetrofitHelper
 import retrofit.retrofitInterface
 import kotlinx.coroutines.Dispatchers
-import android.os.Bundle
 import android.util.Log
 
 
-class data {
+class BackendData {
+
+    fun fetchNews(){}
+    //TODO Implement fetchNews
+    fun fetchTickersList(){}
+    //TODO Implement fetchTickersList
+    fun fetchTickerDetails(){}
+    //TODO Implement fetchTickerDetails
+    fun fetchTickerSummary(){}
+    //TODO Implement fetchTickerSummary
 
     fun fetchData(){
         val tickersAPI = RetrofitHelper.getInstance().create(retrofitInterface::class.java)

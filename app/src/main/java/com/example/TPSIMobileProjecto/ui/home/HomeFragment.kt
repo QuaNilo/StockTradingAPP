@@ -35,12 +35,12 @@ class HomeFragment : Fragment() {
             textView.text = it
         }
 
-        val detailedFragment = DetailedCardFragment()
         val simpleFragment = SimpleCardFragment()
+//        val detailedFragment = DetailedCardFragment()
 
         childFragmentManager.beginTransaction()
             .replace(R.id.simple_card_fragment_container, simpleFragment)
-            .replace(R.id.detailed_card_fragment_container, detailedFragment)
+//            .replace(R.id.detailed_card_fragment_container, detailedFragment)
             .commit()
 
         return root

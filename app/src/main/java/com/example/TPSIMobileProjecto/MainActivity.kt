@@ -26,10 +26,20 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_notifications
+                R.id.navigation_home, R.id.navigation_news
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+    }
+
+    override fun onStart() {
+        super.onStart()
+    }
+
+
 }

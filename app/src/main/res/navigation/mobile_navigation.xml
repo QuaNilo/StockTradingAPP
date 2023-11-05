@@ -13,8 +13,8 @@
 
 
     <fragment
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_news"
         android:name="com.example.TPSIMobileProjecto.ui.News.NewsFragment"
         android:label="@string/title_news"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_news" />
 </navigation>

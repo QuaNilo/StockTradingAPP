@@ -31,15 +31,14 @@ class SimpleCardFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(SimpleCardViewModel::class.java)
 
-            var symbolHolder: List<TickerDetails> = emptyList()
-            // Observe the LiveData and update the UI when data is available
-            viewModel.symbolDetailsList.observe(viewLifecycleOwner) { symbolDetailsList ->
-                symbolHolder = symbolDetailsList
-            }
-            val itemAdapter = SimpleRecyclerAdapter(symbolHolder) // Initialize the adapter
-            val recyclerView:RecyclerView=view.findViewById(R.id.recycleView)
+        var symbolHolder: List<TickerDetails> = emptyList()
+        // Observe the LiveData and update the UI when data is available
+        viewModel.symbolDetailsList.observe(viewLifecycleOwner) { symbolDetailsList ->
+            val itemAdapter = SimpleRecyclerAdapter(symbolDetailsList) // Initialize the adapter
+            val recyclerView: RecyclerView = view.findViewById(R.id.recycleView)
             recyclerView.layoutManager = LinearLayoutManager(context)
             recyclerView.adapter = itemAdapter
+        }
 
 
 

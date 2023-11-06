@@ -16,9 +16,4 @@
         android:layout_height="wrap_content"
         tools:listitem="@layout/layout_simple_card" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Fragment_simple_card" />
 </LinearLayout>

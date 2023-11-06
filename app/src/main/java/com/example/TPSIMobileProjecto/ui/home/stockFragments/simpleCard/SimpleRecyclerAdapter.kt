@@ -32,18 +32,15 @@ class SimpleRecyclerAdapter(private var stockList: List<TickerDetails>) : Recycl
         holder.imageView.setImageResource(R.drawable.ic_home_black_24dp)
         holder.price.text = ItemsViewModel.details.current_price.toString()
         holder.symbol.text = ItemsViewModel.symbol
+        holder.sector.text = ItemsViewModel.sector
     }
 
-    // Update the data and notify the adapter
-    fun updateData(newData: List<TickerDetails>) {
-        stockList = newData
-        notifyDataSetChanged()
-    }
 
     // This class defines the ViewHolder object for each item in the RecyclerView
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageView: ImageView = itemView.findViewById(R.id.imageview)
         val price: TextView = itemView.findViewById(R.id.tvPrice)
         val symbol: TextView = itemView.findViewById(R.id.tvSymbol)
+        val sector: TextView = itemView.findViewById(R.id.tvSector)
     }
 }

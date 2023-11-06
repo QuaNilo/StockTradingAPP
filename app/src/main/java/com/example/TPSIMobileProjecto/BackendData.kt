@@ -17,6 +17,7 @@ import retrofit2.await
 class BackendData {
     private val tickersAPI = RetrofitHelper.getInstance().create(retrofitInterface::class.java)
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
+    private var tickersListDeferred: Deferred<List<String>>? = null
 
 
     init {
@@ -24,25 +25,20 @@ class BackendData {
         getSymbols()
     }
 
-    private var tickersList: List<String>? = null  // Change ResponseType to the actual type you expect
 
     private fun getSymbols() {
-        coroutineScope.launch {
-            try {
-                val symbolsDeferred = async {
-                    tickersAPI.getSymbols()
-                }
-                val symbolsResponse = symbolsDeferred.await()
-                if (symbolsResponse.isSuccessful) {
-                    tickersList = symbolsResponse.body()
-                    // Handle the response or update UI as needed
-                } else {
-                    // Handle the case when the response is not successful
-                }
-            } catch (e: Exception) {
-                // Handle exceptions, such as network errors
+        tickersListDeferred = coroutineScope.async {
+            val symbolsResponse = tickersAPI.getSymbols()
+            if (symbolsResponse.isSuccessful) {
+                symbolsResponse.body() ?: emptyList()
+            } else {
+                emptyList()
             }
         }
+    }
+
+    suspend fun getTickersList(): List<String> {
+        return tickersListDeferred?.await() ?: emptyList()
     }
 
 
@@ -51,6 +47,7 @@ class BackendData {
     fun fetchTickersList(){}
     //TODO Implement fetchTickersList
     suspend fun fetchTickerDetails(): List<TickerDetails> {
+        val tickersList = getTickersList()
         if (tickersList.isNullOrEmpty()) {
             return emptyList()
         }
@@ -69,8 +66,6 @@ class BackendData {
                 Log.e("MyTag: ", "Failed to fetch details for ticker: $ticker")
             }
         }
-        Log.e("MyTag: ", "Trying to get symbolsDetailsList")
-        Log.e("MyTag: ", "SymbolDetailsList: $symbolDetailsList")
         return symbolDetailsList
     }
 

@@ -19,9 +19,7 @@ class BackendData {
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
     private var tickersListDeferred: Deferred<List<String>>? = null
 
-
     init {
-        // Start the coroutine in the init block
         getSymbols()
     }
 
@@ -41,14 +39,29 @@ class BackendData {
         return tickersListDeferred?.await() ?: emptyList()
     }
 
+    suspend fun fetchNews(): List<News> {
+        val newsResponse : Response<List<News>>
+        newsResponse = tickersAPI.getNews()
+        var news :  List<News>?
 
-    fun fetchNews(){}
-    //TODO Implement fetchNews
-    fun fetchTickersList(){}
-    //TODO Implement fetchTickersList
+        if (newsResponse.isSuccessful){
+            news = newsResponse.body()
+        }
+        else{
+            Log.e("MyTag: ", "Failed to get news")
+            return emptyList()
+        }
+        if(news.isNullOrEmpty()){
+            return emptyList()
+        }
+        return news
+
+    }
+
     suspend fun fetchTickerDetails(): List<TickerDetails> {
         val tickersList = getTickersList()
         if (tickersList.isNullOrEmpty()) {
+            Log.e("MyTag: ", "Failed to fetch details for ticker: $tickersList")
             return emptyList()
         }
 
@@ -68,7 +81,6 @@ class BackendData {
         }
         return symbolDetailsList
     }
-
 
     fun fetchTickerSummary(){}
     //TODO Implement fetchTickerSummary

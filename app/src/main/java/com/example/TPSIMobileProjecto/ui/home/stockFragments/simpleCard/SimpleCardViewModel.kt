@@ -26,7 +26,6 @@ class SimpleCardViewModel : ViewModel() {
             val symbolDetailsList = data.fetchTickerDetails()
             _symbolDetailsList.postValue(symbolDetailsList)
         }
-
     }
 
 }

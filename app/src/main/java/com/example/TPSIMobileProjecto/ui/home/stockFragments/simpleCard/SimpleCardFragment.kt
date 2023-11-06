@@ -31,7 +31,6 @@ class SimpleCardFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(SimpleCardViewModel::class.java)
 
-        var symbolHolder: List<TickerDetails> = emptyList()
         // Observe the LiveData and update the UI when data is available
         viewModel.symbolDetailsList.observe(viewLifecycleOwner) { symbolDetailsList ->
             val itemAdapter = SimpleRecyclerAdapter(symbolDetailsList) // Initialize the adapter

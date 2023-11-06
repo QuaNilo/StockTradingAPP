@@ -4,7 +4,7 @@
     android:id="@+id/detailed_card_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.stockFragments.DetailedCardFragment">
+    tools:context=".ui.home.stockFragments.detailedCard.DetailedCardFragment">
 
     <TextView
         android:layout_width="match_parent"

@@ -9,74 +9,68 @@ import retrofit.RetrofitHelper
 import retrofit.retrofitInterface
 import kotlinx.coroutines.Dispatchers
 import android.util.Log
+import kotlinx.coroutines.async
+import kotlinx.coroutines.*
+import retrofit2.await
 
 
 class BackendData {
+    private val tickersAPI = RetrofitHelper.getInstance().create(retrofitInterface::class.java)
+    private val coroutineScope = CoroutineScope(Dispatchers.IO)
+    private var tickersListDeferred: Deferred<List<String>>? = null
+
+
+    init {
+        // Start the coroutine in the init block
+        getSymbols()
+    }
+
+
+    private fun getSymbols() {
+        tickersListDeferred = coroutineScope.async {
+            val symbolsResponse = tickersAPI.getSymbols()
+            if (symbolsResponse.isSuccessful) {
+                symbolsResponse.body() ?: emptyList()
+            } else {
+                emptyList()
+            }
+        }
+    }
+
+    suspend fun getTickersList(): List<String> {
+        return tickersListDeferred?.await() ?: emptyList()
+    }
+
 
     fun fetchNews(){}
     //TODO Implement fetchNews
     fun fetchTickersList(){}
     //TODO Implement fetchTickersList
-    fun fetchTickerDetails(){}
-    //TODO Implement fetchTickerDetails
+    suspend fun fetchTickerDetails(): List<TickerDetails> {
+        val tickersList = getTickersList()
+        if (tickersList.isNullOrEmpty()) {
+            return emptyList()
+        }
+
+        val symbolDetailsList = mutableListOf<TickerDetails>()
+
+        for (ticker in tickersList!!) {
+            val responseSymbolDetail: Response<TickerDetails> = tickersAPI.getSymbolDetails(ticker)
+            if (responseSymbolDetail.isSuccessful) {
+                val tickerDetails = responseSymbolDetail.body()
+                if (tickerDetails != null) {
+                    symbolDetailsList.add(tickerDetails)
+                }
+            } else {
+                // Handle the error, log it, or throw a custom exception
+                Log.e("MyTag: ", "Failed to fetch details for ticker: $ticker")
+            }
+        }
+        return symbolDetailsList
+    }
+
+
     fun fetchTickerSummary(){}
     //TODO Implement fetchTickerSummary
 
-    fun fetchData(){
-        val tickersAPI = RetrofitHelper.getInstance().create(retrofitInterface::class.java)
-        val coroutineScope = CoroutineScope(Dispatchers.IO)
-        // launching a new coroutine
-        coroutineScope.launch {
-            try{
-                val symbolSummariesList = mutableListOf<TickerSummary>()
-                val symbolDetailsList = mutableListOf<TickerDetails>()
-                val tickersList: List<String>?
-                val newsList : List<News>?
-
-                val responseSymbols = tickersAPI.getSymbols()
-                val responseNews = tickersAPI.getNews()
-
-                if (responseNews.isSuccessful){
-                    newsList = responseNews.body()
-                    Log.d("MyTag: ", newsList.toString())
-                }
-
-                if (responseSymbols.isSuccessful) {
-                    tickersList = responseSymbols.body()
-
-                    if (tickersList != null) {
-                        for (ticker in tickersList){
-                            try {
-                                val responseSymbolSummary: Response<TickerSummary> = tickersAPI.getSymbolSummary(ticker)
-                                val responseSymbolDetail: Response<TickerDetails> = tickersAPI.getSymbolDetails(ticker)
-
-                                if (responseSymbolSummary.isSuccessful) {
-                                    val tickerSummary = responseSymbolSummary.body()
-                                    val tickerDetails = responseSymbolDetail.body()
-
-                                    if (tickerDetails != null) {
-                                        symbolDetailsList.add(tickerDetails)
-                                    }
-                                    if (tickerSummary != null) {
-                                        symbolSummariesList.add(tickerSummary)
-                                    }
-                                }
-                            } catch (e: Exception) {
-                                // Handle the exception, log or ignore it
-                                Log.e("MyTag: ", "Error processing ticker $ticker: ${e.message}")
-                            }
-                        }
-                        Log.d("MyTag: ", tickersList.toString())
-                        Log.d("MyTag: ", symbolSummariesList[0].toString())
-                        Log.d("MyTag: ", symbolDetailsList[0].toString())
-                    }
-                }
-
-            }catch (e: Exception) {
-                // Handle network or coroutine exception
-                Log.e("MyTag: ", e.message ?: "Unknown error")
-            }
-        }
-
-    }
 }

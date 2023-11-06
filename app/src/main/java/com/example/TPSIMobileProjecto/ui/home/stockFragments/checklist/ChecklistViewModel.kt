@@ -1,4 +1,4 @@
-package com.example.TPSIMobileProjecto.ui.home.stockFragments
+package com.example.TPSIMobileProjecto.ui.home.stockFragments.checklist
 
 import androidx.lifecycle.ViewModel
 

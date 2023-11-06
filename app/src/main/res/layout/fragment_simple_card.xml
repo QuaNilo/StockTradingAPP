@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/simple_card_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.stockFragments.SimpleCardFragment">
+    android:id="@+id/simple_card_fragment"
+    android:orientation="vertical"
+    tools:context=".ui.home.stockFragments.simpleCard.SimpleCardFragment">
 
-    <TextView
+    <!-- RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycleView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="SimpleCard" />
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/layout_simple_card" />
 
-</FrameLayout>
+</LinearLayout>

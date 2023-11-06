@@ -1,4 +1,4 @@
-package com.example.TPSIMobileProjecto.ui.home.stockFragments.simpleCard
+package com.example.TPSIMobileProjecto.ui.News
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,10 +7,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.TPSIMobileProjecto.R
+import retrofit.News
 import retrofit.TickerDetails
 
 
-class SimpleRecyclerAdapter(private var stockList: List<TickerDetails>) : RecyclerView.Adapter<SimpleRecyclerAdapter.MyViewHolder>() {
+class NewsRecyclerAdapter(private var stockList: List<News>) : RecyclerView.Adapter<NewsRecyclerAdapter.MyViewHolder>() {
 
     // This method creates a new ViewHolder object for each item in the RecyclerView
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -29,20 +30,18 @@ class SimpleRecyclerAdapter(private var stockList: List<TickerDetails>) : Recycl
     // for each item in the RecyclerView
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val ItemsViewModel = stockList[position]
-        holder.imageView.setImageResource(R.drawable.ic_home_black_24dp)
-        holder.price.text = ItemsViewModel.details.current_price.toString()
-        holder.symbol.text = ItemsViewModel.symbol
-        holder.sector.text = ItemsViewModel.sector
-        holder.percentage.text = ItemsViewModel.details.change_percent.toString()
+        holder.date.text = ItemsViewModel.date
+        holder.description.text = ItemsViewModel.description
+        holder.image_url.text = ItemsViewModel.image_url
+        holder.title.text = ItemsViewModel.title
     }
 
 
     // This class defines the ViewHolder object for each item in the RecyclerView
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val imageView: ImageView = itemView.findViewById(R.id.imageview)
-        val price: TextView = itemView.findViewById(R.id.tvPrice)
-        val symbol: TextView = itemView.findViewById(R.id.tvSymbol)
-        val sector: TextView = itemView.findViewById(R.id.tvSector)
-        val percentage : TextView = itemView.findViewById(R.id.tvPercentage)
+        val date: TextView = itemView.findViewById(R.id.tvPrice)
+        val description: TextView = itemView.findViewById(R.id.tvPrice)
+        val image_url: TextView = itemView.findViewById(R.id.tvSymbol)
+        val title: TextView = itemView.findViewById(R.id.tvSector)
     }
 }

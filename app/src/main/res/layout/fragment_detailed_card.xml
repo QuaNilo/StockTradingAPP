@@ -1,14 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/detailed_card_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.home.stockFragments.detailedCard.DetailedCardFragment">
 
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:text="DetailedCard" />
+        android:layout_height="match_parent">
 
+        <TextView
+            android:id="@+id/tvSymbol"
+            android:layout_width="147dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="125dp"
+            android:layout_marginTop="39dp"
+            android:layout_marginEnd="139dp"
+            android:layout_marginBottom="668dp"
+            android:text="TextView"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvSector"
+            android:layout_width="123dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="125dp"
+            android:layout_marginTop="63dp"
+            android:layout_marginEnd="163dp"
+            android:layout_marginBottom="648dp"
+            android:text="TextView"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvPercentage"
+            android:layout_width="97dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="248dp"
+            android:layout_marginTop="91dp"
+            android:layout_marginEnd="66dp"
+            android:layout_marginBottom="610dp"
+            android:text="TextView"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvPrice"
+            android:layout_width="85dp"
+            android:layout_height="29dp"
+            android:layout_marginStart="125dp"
+            android:layout_marginTop="91dp"
+            android:layout_marginEnd="201dp"
+            android:layout_marginBottom="611dp"
+            android:text="TextView"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageview"
+            android:layout_width="82dp"
+            android:layout_height="82dp"
+            android:layout_marginStart="34dp"
+            android:layout_marginTop="39dp"
+            android:layout_marginEnd="295dp"
+            android:layout_marginBottom="610dp"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.jjoe64.graphview.GraphView
+            android:id="@+id/idGraphView"
+            android:layout_width="411dp"
+            android:layout_height="533dp"
+            android:layout_marginTop="198dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

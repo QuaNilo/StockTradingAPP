@@ -58,7 +58,9 @@ class BackendData {
 
     }
 
-    suspend fun fetchTickerDetails(): List<TickerDetails> {
+    //TODO Create method to get a single Ticker detail
+
+    suspend fun fetchTickerDetailsList(): List<TickerDetails> {
         val tickersList = getTickersList()
         if (tickersList.isNullOrEmpty()) {
             Log.e("MyTag: ", "Failed to fetch details for ticker: $tickersList")

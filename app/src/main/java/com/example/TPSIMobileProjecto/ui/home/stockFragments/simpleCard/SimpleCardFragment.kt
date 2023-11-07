@@ -38,9 +38,6 @@ class SimpleCardFragment : Fragment() {
             recyclerView.layoutManager = LinearLayoutManager(context)
             recyclerView.adapter = itemAdapter
         }
-
-
-
     }
 
 }

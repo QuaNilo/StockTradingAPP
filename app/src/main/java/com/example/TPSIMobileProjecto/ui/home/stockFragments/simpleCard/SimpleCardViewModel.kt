@@ -23,7 +23,7 @@ class SimpleCardViewModel : ViewModel() {
 
     init {
         coroutineScope.launch {
-            val symbolDetailsList = data.fetchTickerDetails()
+            val symbolDetailsList = data.fetchTickerDetailsList()
             _symbolDetailsList.postValue(symbolDetailsList)
         }
     }

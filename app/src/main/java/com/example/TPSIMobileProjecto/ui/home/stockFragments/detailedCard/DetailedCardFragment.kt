@@ -7,6 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.TPSIMobileProjecto.R
+import com.jjoe64.graphview.GraphView
+import com.jjoe64.graphview.series.DataPoint
+import com.jjoe64.graphview.series.LineGraphSeries
 
 class DetailedCardFragment : Fragment() {
 
@@ -27,5 +30,9 @@ class DetailedCardFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(DetailedCardViewModel::class.java)
         // TODO: Use the ViewModel
+
+        val graphlist : List<GraphData>
+
+
     }
 }

@@ -35,7 +35,7 @@ class NewsFragment : Fragment() {
 
         newsViewModel.newsList.observe(viewLifecycleOwner) { newsList ->
             val itemAdapter = NewsRecyclerAdapter(newsList) // Initialize the adapter
-            val recyclerView: RecyclerView = view.findViewById(R.id.newsrecyleview)
+            val recyclerView: RecyclerView = requireView().findViewById(R.id.newsrecyleview)
             recyclerView.layoutManager = LinearLayoutManager(context)
             recyclerView.adapter = itemAdapter
         }

@@ -43,4 +43,6 @@ class NewsFragment : Fragment() {
         _binding = null
     }
 
+
+
 }

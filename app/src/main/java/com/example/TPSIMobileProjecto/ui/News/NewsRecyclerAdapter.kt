@@ -1,15 +1,17 @@
 package com.example.TPSIMobileProjecto.ui.News
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.TPSIMobileProjecto.R
 import com.squareup.picasso.Picasso
 import retrofit.News
-import retrofit.TickerDetails
+//import retrofit.TickerDetails
 
 
 class NewsRecyclerAdapter(private var stockList: List<News>) : RecyclerView.Adapter<NewsRecyclerAdapter.MyViewHolder>() {
@@ -29,11 +31,25 @@ class NewsRecyclerAdapter(private var stockList: List<News>) : RecyclerView.Adap
 
     // This method binds the data to the ViewHolder object
     // for each item in the RecyclerView
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val newsItem = stockList[position]
         holder.date.text = newsItem.date
         holder.description.text = newsItem.description
         holder.title.text = newsItem.title
+
+        holder.description.maxLines = 3
+
+        // Button to change the lines displayed
+        holder.readMoreButton.setOnClickListener {
+            if (holder.description.maxLines == 3) {
+                holder.description.maxLines = Int.MAX_VALUE
+                holder.readMoreButton.text = "Read Less"
+            } else {
+                holder.description.maxLines = 3
+                holder.readMoreButton.text = "Read More"
+            }
+        }
 
         // Load and display image using Picasso
         newsItem.image_url.let {
@@ -46,5 +62,10 @@ class NewsRecyclerAdapter(private var stockList: List<News>) : RecyclerView.Adap
         val description: TextView = itemView.findViewById(R.id.tvDesc)
         val title: TextView = itemView.findViewById(R.id.tvTitle)
         val imageView: ImageView = itemView.findViewById(R.id.ivImage)
+        val readMoreButton: Button = itemView.findViewById(R.id.btnReadMore)
     }
+
+
 }
+
+

@@ -18,13 +18,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="12dp"
             android:layout_marginEnd="12dp"
             android:text="@string/title"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.454"
+            app:layout_constraintHorizontal_bias="0.363"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ivImage" />
 
@@ -33,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="16dp"
             android:text="@string/date"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -57,15 +57,14 @@
 
         <ImageView
             android:id="@+id/ivImage"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="28dp"
-            android:layout_marginEnd="256dp"
+            android:layout_width="395dp"
+            android:layout_height="151dp"
             android:contentDescription="@string/img_url"
 
             android:textColor="#454545"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

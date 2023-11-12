@@ -2,4 +2,8 @@
     <string name="app_name">TPSIMobileProjecto</string>
     <string name="title_home">Home</string>
     <string name="title_news">News</string>
+    <string name="description">Description</string>
+    <string name="img_url">Img_url</string>
+    <string name="title">Title</string>
+    <string name="date">Date</string>
 </resources>

@@ -60,6 +60,10 @@ dependencies {
     // for adding recyclerview
     implementation ("androidx.recyclerview:recyclerview:1.3.2")
 
+    //to display the images
+    implementation ("com.squareup.picasso:picasso:2.8")
+
+
     // for adding cardview
     implementation ("androidx.cardview:cardview:1.0.0")
 

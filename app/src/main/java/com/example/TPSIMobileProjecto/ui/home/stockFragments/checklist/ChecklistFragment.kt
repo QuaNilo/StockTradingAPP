@@ -2,28 +2,22 @@ package com.example.TPSIMobileProjecto.ui.home.stockFragments.checklist
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.TPSIMobileProjecto.R
-import com.example.TPSIMobileProjecto.ui.home.stockFragments.simpleCard.SimpleCardViewModel
-import com.example.TPSIMobileProjecto.ui.home.stockFragments.simpleCard.SimpleRecyclerAdapter
+import com.example.TPSIMobileProjecto.ui.home.stockFragments.checklist.ChecklistRecyclerAdapter
+import com.example.TPSIMobileProjecto.ui.home.stockFragments.sharedViewModels.SimpleChecklistSharedViewModel
 import retrofit.TickerDetails
-import retrofit.TickerSummary
 
-class ChecklistFragment : Fragment(), ChecklistRecyclerAdapter.OnItemClickListener {
-    private lateinit var clickedItems: List<TickerDetails>
-    private lateinit var adapter: ChecklistRecyclerAdapter
-    companion object {
-        fun newInstance() = ChecklistFragment()
-    }
-
+class ChecklistFragment : Fragment(), ChecklistRecyclerAdapter.ChecklistItemClickListener{
     private lateinit var viewModel: ChecklistViewModel
-
+    private lateinit var sharedViewModel: SimpleChecklistSharedViewModel
+    private var watchList: MutableList<TickerDetails> = mutableListOf()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,37 +26,29 @@ class ChecklistFragment : Fragment(), ChecklistRecyclerAdapter.OnItemClickListen
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        lateinit var clickedItems : List<TickerSummary>
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(ChecklistViewModel::class.java)
+        sharedViewModel = ViewModelProvider(requireActivity()).get(SimpleChecklistSharedViewModel::class.java) // Initialize the sharedViewModel
 
         // Observe the LiveData and update the UI when data is available
         viewModel.symbolDetailsList.observe(viewLifecycleOwner) { symbolDetailsList ->
-            val itemAdapter = SimpleRecyclerAdapter(symbolDetailsList) // Initialize the adapter
+            val itemAdapter = ChecklistRecyclerAdapter(symbolDetailsList) // Initialize the adapter
             val recyclerView: RecyclerView = view.findViewById(R.id.recycleView)
+            itemAdapter.setChecklistItemClickListener(this) // Set the item click listener
             recyclerView.layoutManager = LinearLayoutManager(context)
             recyclerView.adapter = itemAdapter
         }
-        val addButton : Button = view.findViewById(R.id.btnAdd)
-        addButton.setOnClickListener {
-
-        }
     }
 
-    override fun onItemClick(position: Int) {
-        // Handle the click event for the card at the given position
-        // You can store the clicked position in a list or perform any other action
-        // Example: Add the clicked position to the clickedItems list
-        if (::clickedItems.isInitialized) {
-            clickedItems = clickedItems + viewModel.symbolDetailsList.value?.get(position)
-        }
+    override fun onAddButtonClick(tickerDetails: TickerDetails) {
+        Log.e("Mytag : ", "Current watch list = ${tickerDetails.toString()}")
+        watchList.add(tickerDetails)
+
     }
 
-
-    private fun getClickedItems(): List<TickerSummary> {
-        // Return the list of clicked items
-        return clickedItems
+    override fun onPause() {
+        super.onPause()
+        sharedViewModel.setAddedItems(watchList)
     }
-
-
 }
+

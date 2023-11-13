@@ -1,6 +1,7 @@
 package com.example.TPSIMobileProjecto.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,28 +32,31 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-//        val textView: TextView = binding.textHome
-//        homeViewModel.text.observe(viewLifecycleOwner) {
-//            textView.text = it
-//        }
 
 
 
         val simpleFragment = SimpleCardFragment()
-//        val detailedFragment = DetailedCardFragment()
         val checkListFragment = ChecklistFragment()
+        val button: Button = root.findViewById(R.id.btnCheckList)
+        button.text = "Edit Checklist"
 
         childFragmentManager.beginTransaction()
-            .replace(R.id.display_fragment, simpleFragment)
-//            .replace(R.id.detailed_card_fragment_container, detailedFragment)
+            .replace(R.id.display_fragment, simpleFragment, "TAG_SIMPLE_FRAGMENT")
             .commit()
 
-        val button : Button = root.findViewById(R.id.btnCheckList)
-        button.text = "Edit Checklist"
+
         button.setOnClickListener {
-            button.text = "Exit checklist"
+            val targetFragment = if (button.text == "Edit Checklist") {
+                button.text = "Exit Checklist"
+                checkListFragment
+            } else {
+                button.text = "Edit Checklist"
+                simpleFragment
+            }
+
             childFragmentManager.beginTransaction()
-                .replace(R.id.display_fragment, checkListFragment)
+                .replace(R.id.display_fragment, targetFragment)
+                .addToBackStack(null)
                 .commit()
         }
         return root

@@ -16,10 +16,7 @@ import retrofit.TickerDetails
 
 class SimpleCardFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = SimpleCardFragment()
-    }
-
+    private var watchList: MutableList<TickerDetails> = mutableListOf()
     private lateinit var viewModel: SimpleCardViewModel
     private lateinit var sharedViewModel: SimpleChecklistSharedViewModel
 
@@ -36,9 +33,11 @@ class SimpleCardFragment : Fragment() {
         sharedViewModel = ViewModelProvider(requireActivity()).get(SimpleChecklistSharedViewModel::class.java) // Initialize the sharedViewModel
 
 
-        sharedViewModel.addedItems.observe(viewLifecycleOwner) { addedItems ->
+        sharedViewModel.addedItemsSimple.observe(viewLifecycleOwner) { addedItems ->
             // Do something with the watchlist in this fragment
             Log.e("Mytag : ", "Received watchlist in OtherFragment: $addedItems")
+            watchList.clear()
+            watchList.addAll(addedItems)
             val itemAdapter = SimpleRecyclerAdapter(addedItems) // Initialize the adapter
             val recyclerView: RecyclerView = view.findViewById(R.id.recycleView)
             recyclerView.layoutManager = LinearLayoutManager(context)
@@ -51,6 +50,11 @@ class SimpleCardFragment : Fragment() {
 //            recyclerView.layoutManager = LinearLayoutManager(context)
 //            recyclerView.adapter = itemAdapter
 //        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        sharedViewModel.setAddedItemsToChecklist(watchList)
     }
 
 }

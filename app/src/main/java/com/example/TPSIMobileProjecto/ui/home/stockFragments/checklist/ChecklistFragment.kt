@@ -18,6 +18,8 @@ class ChecklistFragment : Fragment(), ChecklistRecyclerAdapter.ChecklistItemClic
     private lateinit var viewModel: ChecklistViewModel
     private lateinit var sharedViewModel: SimpleChecklistSharedViewModel
     private var watchList: MutableList<TickerDetails> = mutableListOf()
+    val symbolsDetailsList = mutableListOf<TickerDetails>()
+    val addedItemsList = mutableListOf<TickerDetails>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -30,25 +32,37 @@ class ChecklistFragment : Fragment(), ChecklistRecyclerAdapter.ChecklistItemClic
         viewModel = ViewModelProvider(this).get(ChecklistViewModel::class.java)
         sharedViewModel = ViewModelProvider(requireActivity()).get(SimpleChecklistSharedViewModel::class.java) // Initialize the sharedViewModel
 
-        // Observe the LiveData and update the UI when data is available
+
         viewModel.symbolDetailsList.observe(viewLifecycleOwner) { symbolDetailsList ->
-            val itemAdapter = ChecklistRecyclerAdapter(symbolDetailsList) // Initialize the adapter
+            symbolsDetailsList.clear()
+            symbolsDetailsList.addAll(symbolDetailsList)
+            val itemAdapter = ChecklistRecyclerAdapter(requireContext(), symbolsDetailsList, addedItemsList) // Initialize the adapter
             val recyclerView: RecyclerView = view.findViewById(R.id.recycleView)
             itemAdapter.setChecklistItemClickListener(this) // Set the item click listener
             recyclerView.layoutManager = LinearLayoutManager(context)
             recyclerView.adapter = itemAdapter
         }
+
     }
 
     override fun onAddButtonClick(tickerDetails: TickerDetails) {
-        Log.e("Mytag : ", "Current watch list = ${tickerDetails.toString()}")
         watchList.add(tickerDetails)
-
     }
 
+    override fun onRemoveButtonClick(tickerDetails: TickerDetails) {
+        watchList.remove(tickerDetails)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        sharedViewModel.addedItemsChecklist.observe(viewLifecycleOwner) {addedItems ->
+            addedItemsList.clear()
+            addedItemsList.addAll(addedItems)
+        }
+    }
     override fun onPause() {
         super.onPause()
-        sharedViewModel.setAddedItems(watchList)
+        sharedViewModel.setAddedItemsToSimple(watchList)
     }
 }
 

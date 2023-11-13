@@ -5,9 +5,15 @@ import retrofit.TickerDetails
 import androidx.lifecycle.ViewModel
 
 class SimpleChecklistSharedViewModel : ViewModel() {
-    val addedItems = MutableLiveData<List<TickerDetails>>()
+    val addedItemsSimple = MutableLiveData<List<TickerDetails>>()
+    val addedItemsChecklist = MutableLiveData<List<TickerDetails>>()
 
-    fun setAddedItems(items: MutableList<TickerDetails>) {
-        addedItems.value = items
+
+    fun setAddedItemsToSimple(items: MutableList<TickerDetails>) {
+        addedItemsSimple.value = items
+    }
+
+    fun setAddedItemsToChecklist(items: MutableList<TickerDetails>) {
+        addedItemsChecklist.value = items
     }
 }

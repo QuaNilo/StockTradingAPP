@@ -64,5 +64,10 @@ class ChecklistFragment : Fragment(), ChecklistRecyclerAdapter.ChecklistItemClic
         super.onPause()
         sharedViewModel.setAddedItemsToSimple(watchList)
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        sharedViewModel.setAddedItemsToSimple(watchList)
+    }
 }
 

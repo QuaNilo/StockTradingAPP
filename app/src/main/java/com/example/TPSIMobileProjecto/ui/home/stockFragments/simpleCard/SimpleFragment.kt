@@ -29,32 +29,41 @@ class SimpleCardFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.e("Lifecycle", "SimpleFragment onViewCreated()")
         viewModel = ViewModelProvider(this).get(SimpleCardViewModel::class.java)
         sharedViewModel = ViewModelProvider(requireActivity()).get(SimpleChecklistSharedViewModel::class.java) // Initialize the sharedViewModel
 
+        viewModel.tickerDetailsList.observe(viewLifecycleOwner, { tickerDetailsList ->
+            watchList.clear()
+            watchList.addAll(tickerDetailsList)
+        })
 
+    }
+
+    override fun onPause() {
+        Log.e("Lifecycle", "SimpleFragment onPause()")
+
+        super.onPause()
+        sharedViewModel.setAddedItemsToChecklist(watchList)
+    }
+
+    override fun onStart() {
+        super.onStart()
         sharedViewModel.addedItemsSimple.observe(viewLifecycleOwner) { addedItems ->
             // Do something with the watchlist in this fragment
             Log.e("Mytag : ", "Received watchlist in OtherFragment: $addedItems")
             watchList.clear()
             watchList.addAll(addedItems)
-            val itemAdapter = SimpleRecyclerAdapter(addedItems) // Initialize the adapter
-            val recyclerView: RecyclerView = view.findViewById(R.id.recycleView)
-            recyclerView.layoutManager = LinearLayoutManager(context)
-            recyclerView.adapter = itemAdapter
         }
-        // Observe the LiveData and update the UI when data is available
-//        viewModel.symbolDetailsList.observe(viewLifecycleOwner) { symbolDetailsList ->
-//            val itemAdapter = SimpleRecyclerAdapter(symbolDetailsList) // Initialize the adapter
-//            val recyclerView: RecyclerView = view.findViewById(R.id.recycleView)
-//            recyclerView.layoutManager = LinearLayoutManager(context)
-//            recyclerView.adapter = itemAdapter
-//        }
+        val itemAdapter = SimpleRecyclerAdapter(watchList) // Initialize the adapter
+        val recyclerView: RecyclerView = requireView().findViewById(R.id.recycleView)
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = itemAdapter
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.setTickerDetailsList(watchList)
     }
 
-    override fun onPause() {
-        super.onPause()
-        sharedViewModel.setAddedItemsToChecklist(watchList)
-    }
 
 }

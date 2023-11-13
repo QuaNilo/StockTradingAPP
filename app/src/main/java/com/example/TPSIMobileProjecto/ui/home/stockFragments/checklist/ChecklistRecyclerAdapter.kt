@@ -46,8 +46,6 @@ class ChecklistRecyclerAdapter(private val context: Context, private var stockLi
         holder.symbol.text = ItemsViewModel.symbol
         holder.percentage.text = ItemsViewModel.details.change_percent.toString()
 
-
-
         val isInWatchList = addedItems.any { it.symbol == ItemsViewModel.symbol }
         holder.addButton.text = "Remove"
         if (isInWatchList) {
@@ -72,10 +70,6 @@ class ChecklistRecyclerAdapter(private val context: Context, private var stockLi
         }
 
     }
-
-
-
-
 
     // This class defines the ViewHolder object for each item in the RecyclerView
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

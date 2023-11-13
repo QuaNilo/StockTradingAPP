@@ -50,7 +50,6 @@ class NewsRecyclerAdapter(private var stockList: List<News>) : RecyclerView.Adap
                 holder.readMoreButton.text = "Read More"
             }
         }
-
         // Load and display image using Picasso
         newsItem.image_url.let {
             Picasso.get().load(it).into(holder.imageView)

@@ -1,15 +1,18 @@
 package com.example.TPSIMobileProjecto.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.TPSIMobileProjecto.databinding.FragmentHomeBinding
 import com.example.TPSIMobileProjecto.ui.home.stockFragments.simpleCard.SimpleCardFragment
 import com.example.TPSIMobileProjecto.R
+import com.example.TPSIMobileProjecto.ui.home.stockFragments.checklist.ChecklistFragment
 
 class HomeFragment : Fragment() {
 
@@ -29,19 +32,33 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
+
+
 
         val simpleFragment = SimpleCardFragment()
-//        val detailedFragment = DetailedCardFragment()
+        val checkListFragment = ChecklistFragment()
+        val button: Button = root.findViewById(R.id.btnCheckList)
+        button.text = "Edit Checklist"
 
         childFragmentManager.beginTransaction()
-            .replace(R.id.simple_card_fragment, simpleFragment)
-//            .replace(R.id.detailed_card_fragment_container, detailedFragment)
+            .replace(R.id.display_fragment, simpleFragment, "TAG_SIMPLE_FRAGMENT")
             .commit()
 
+
+        button.setOnClickListener {
+            val targetFragment = if (button.text == "Edit Checklist") {
+                button.text = "Exit Checklist"
+                checkListFragment
+            } else {
+                button.text = "Edit Checklist"
+                simpleFragment
+            }
+
+            childFragmentManager.beginTransaction()
+                .replace(R.id.display_fragment, targetFragment)
+                .addToBackStack(null)
+                .commit()
+        }
         return root
     }
 

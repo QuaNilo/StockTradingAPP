@@ -41,6 +41,21 @@ class NewsFragment : Fragment() {
         }
         return root
     }
+    override fun onStart() {
+        super.onStart()
+        Log.e("Lifecycle", "NewsFragment onStart()")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.e("Lifecycle", "NewsFragment onPause()")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.e("Lifecycle", "NewsFragment onStop()")
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

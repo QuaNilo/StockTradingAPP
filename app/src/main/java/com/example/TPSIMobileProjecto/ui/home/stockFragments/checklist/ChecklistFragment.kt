@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.TPSIMobileProjecto.R
@@ -20,6 +21,7 @@ class ChecklistFragment : Fragment(), ChecklistRecyclerAdapter.ChecklistItemClic
     private var watchList: MutableList<TickerDetails> = mutableListOf()
     val symbolsDetailsList = mutableListOf<TickerDetails>()
     val addedItemsList = mutableListOf<TickerDetails>()
+    lateinit var progressBar: ProgressBar // Import ProgressBar if not done already
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -31,8 +33,8 @@ class ChecklistFragment : Fragment(), ChecklistRecyclerAdapter.ChecklistItemClic
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(ChecklistViewModel::class.java)
         sharedViewModel = ViewModelProvider(requireActivity()).get(SimpleChecklistSharedViewModel::class.java) // Initialize the sharedViewModel
-
-
+        progressBar = view.findViewById(R.id.progressBar)
+        showProgressBar()
         viewModel.symbolDetailsList.observe(viewLifecycleOwner) { symbolDetailsList ->
             symbolsDetailsList.clear()
             symbolsDetailsList.addAll(symbolDetailsList)
@@ -41,6 +43,7 @@ class ChecklistFragment : Fragment(), ChecklistRecyclerAdapter.ChecklistItemClic
             itemAdapter.setChecklistItemClickListener(this) // Set the item click listener
             recyclerView.layoutManager = LinearLayoutManager(context)
             recyclerView.adapter = itemAdapter
+            hideProgressBar()
         }
 
     }
@@ -53,6 +56,14 @@ class ChecklistFragment : Fragment(), ChecklistRecyclerAdapter.ChecklistItemClic
         watchList.remove(tickerDetails)
     }
 
+
+    fun showProgressBar() {
+        progressBar.visibility = View.VISIBLE
+    }
+
+    fun hideProgressBar() {
+        progressBar.visibility = View.GONE
+    }
     override fun onStart() {
         super.onStart()
         sharedViewModel.addedItemsChecklist.observe(viewLifecycleOwner) {addedItems ->

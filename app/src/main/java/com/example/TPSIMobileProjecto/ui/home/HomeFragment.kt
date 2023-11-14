@@ -15,7 +15,9 @@ import com.example.TPSIMobileProjecto.R
 import com.example.TPSIMobileProjecto.ui.home.stockFragments.checklist.ChecklistFragment
 
 class HomeFragment : Fragment() {
-
+    val simpleFragment = SimpleCardFragment()
+    val checkListFragment = ChecklistFragment()
+    lateinit var button : Button
     private var _binding: FragmentHomeBinding? = null
 
     // This property is only valid between onCreateView and
@@ -27,6 +29,7 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         Log.e("Lifecycle", "HomeFragment onCreateView()")
         val homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
@@ -36,8 +39,6 @@ class HomeFragment : Fragment() {
 
 
 
-        val simpleFragment = SimpleCardFragment()
-        val checkListFragment = ChecklistFragment()
         val button: Button = root.findViewById(R.id.btnCheckList)
         button.text = "Edit Checklist"
 
@@ -60,8 +61,49 @@ class HomeFragment : Fragment() {
                 .addToBackStack(null)
                 .commit()
         }
+
+        childFragmentManager.addOnBackStackChangedListener {
+            // Update the button text based on the currently displayed fragment
+            val currentFragment = childFragmentManager.findFragmentById(R.id.display_fragment)
+            if (currentFragment is SimpleCardFragment) {
+                button.text = "Edit Checklist"
+            } else if (currentFragment is ChecklistFragment) {
+                button.text = "Exit Checklist"
+            }
+        }
+
+
+
         return root
     }
+
+    override fun onResume() {
+        super.onResume()
+        Log.e("Lifecycle", "HomeFragment onResume()")
+        val button: Button = requireView().findViewById(R.id.btnCheckList)
+        // Update the button text based on the currently displayed fragment
+        val currentFragment = childFragmentManager.findFragmentById(R.id.display_fragment)
+        if (currentFragment is SimpleCardFragment) {
+            button.text = "Edit Checklist"
+        } else if (currentFragment is ChecklistFragment) {
+            button.text = "Exit Checklist"
+        }
+    }
+    override fun onStart() {
+        super.onStart()
+        Log.e("Lifecycle", "HomeFragment onStart()")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.e("Lifecycle", "HomeFragment onPause()")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.e("Lifecycle", "HomeFragment onStop()")
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

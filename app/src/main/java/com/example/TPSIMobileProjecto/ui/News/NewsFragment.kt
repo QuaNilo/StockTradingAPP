@@ -5,14 +5,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.TPSIMobileProjecto.R
 import com.example.TPSIMobileProjecto.databinding.FragmentNewsBinding
-import com.example.TPSIMobileProjecto.ui.home.stockFragments.simpleCard.SimpleRecyclerAdapter
 
 class NewsFragment : Fragment() {
 
@@ -23,10 +21,12 @@ class NewsFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater,
+
+    inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        Log.e("Lifecycle", "NewsFragment onCreateView()")
         val newsViewModel = ViewModelProvider(this).get(NewsViewModel::class.java)
 
         _binding = FragmentNewsBinding.inflate(inflater, container, false)
@@ -34,17 +34,34 @@ class NewsFragment : Fragment() {
 
 
         newsViewModel.newsList.observe(viewLifecycleOwner) { newsList ->
-            val itemAdapter = NewsRecyclerAdapter(newsList) // Initialize the adapter
-            val recyclerView: RecyclerView = requireView().findViewById(R.id.newsrecyleview)
-            recyclerView.layoutManager = LinearLayoutManager(context)
-            recyclerView.adapter = itemAdapter
+            view?.findViewById<RecyclerView>(R.id.newsrecyleview)?.let { recyclerView ->
+                recyclerView.layoutManager = LinearLayoutManager(recyclerView.context)
+                recyclerView.adapter = NewsRecyclerAdapter(newsList)
+            }
         }
         return root
     }
+    override fun onStart() {
+        super.onStart()
+        Log.e("Lifecycle", "NewsFragment onStart()")
+    }
 
+    override fun onPause() {
+        super.onPause()
+        Log.e("Lifecycle", "NewsFragment onPause()")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.e("Lifecycle", "NewsFragment onStop()")
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        Log.e("Lifecycle", "NewsFragment onDestroyView()")
     }
+
+
+
 }

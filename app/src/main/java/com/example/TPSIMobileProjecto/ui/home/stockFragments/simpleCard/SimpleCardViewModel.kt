@@ -14,18 +14,10 @@ import retrofit.TickerDetails
 import retrofit.retrofitInterface
 
 class SimpleCardViewModel : ViewModel() {
-    private val coroutineScope = CoroutineScope(Dispatchers.IO)
-    val data = BackendData()
+    private val _tickerDetailsList = MutableLiveData<List<TickerDetails>>()
+    val tickerDetailsList: LiveData<List<TickerDetails>> get() = _tickerDetailsList
 
-    // Define a LiveData property to hold symbolDetailsList
-    private val _symbolDetailsList = MutableLiveData<List<TickerDetails>>()
-    val symbolDetailsList: LiveData<List<TickerDetails>> get() = _symbolDetailsList
-
-    init {
-        coroutineScope.launch {
-            val symbolDetailsList = data.fetchTickerDetailsList()
-            _symbolDetailsList.postValue(symbolDetailsList)
-        }
+    fun setTickerDetailsList(list: List<TickerDetails>) {
+        _tickerDetailsList.value = list
     }
-
 }

@@ -27,6 +27,7 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         Log.e("Lifecycle", "HomeFragment onCreateView()")
         val homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 

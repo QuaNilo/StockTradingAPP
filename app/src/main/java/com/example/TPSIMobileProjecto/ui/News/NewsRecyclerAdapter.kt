@@ -1,7 +1,6 @@
 package com.example.TPSIMobileProjecto.ui.News
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,22 +40,27 @@ class NewsRecyclerAdapter(private var stockList: List<News>) : RecyclerView.Adap
 
         // Button to change the lines displayed
         holder.description.post {
-            val lineCount = holder.description.layout.lineCount
-            holder.description.maxLines = 3
-            if (lineCount < 3) {
-                holder.readMoreButton.visibility = View.GONE
-            } else {
-                holder.readMoreButton.visibility = View.VISIBLE
-                holder.description.maxLines = 3
-
-                // Button to change the lines displayed
-                holder.readMoreButton.setOnClickListener {
-                    if (holder.description.maxLines == 3) {
-                        holder.description.maxLines = Int.MAX_VALUE
-                        holder.readMoreButton.text = "Read Less"
-                    } else {
+            val layout = holder.description.layout
+            if (layout != null) {
+                val lines = layout.lineCount
+                if (lines > 0) {
+                    val ellipsisCount = layout.getEllipsisCount(lines - 1)
+                    if (ellipsisCount > 0) {
+                        holder.readMoreButton.visibility = View.VISIBLE
                         holder.description.maxLines = 3
-                        holder.readMoreButton.text = "Read More"
+
+                        // Button to change the lines displayed
+                        holder.readMoreButton.setOnClickListener {
+                            if (holder.description.maxLines == 3) {
+                                holder.description.maxLines = Int.MAX_VALUE
+                                holder.readMoreButton.text = "Read Less"
+                            } else {
+                                holder.description.maxLines = 3
+                                holder.readMoreButton.text = "Read More"
+                            }
+                        }
+                    } else {
+                        holder.readMoreButton.visibility = View.GONE
                     }
                 }
             }

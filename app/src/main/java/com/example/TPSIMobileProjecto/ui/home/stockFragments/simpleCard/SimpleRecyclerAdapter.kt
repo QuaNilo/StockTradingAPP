@@ -1,16 +1,18 @@
 package com.example.TPSIMobileProjecto.ui.home.stockFragments.simpleCard
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.TPSIMobileProjecto.R
 import com.squareup.picasso.Picasso
 import retrofit.TickerSummary
 
 
-class SimpleRecyclerAdapter(private var stockList: List<TickerSummary>) : RecyclerView.Adapter<SimpleRecyclerAdapter.MyViewHolder>() {
+class SimpleRecyclerAdapter(private val context: Context, private var stockList: List<TickerSummary>) : RecyclerView.Adapter<SimpleRecyclerAdapter.MyViewHolder>() {
 
     // This method creates a new ViewHolder object for each item in the RecyclerView
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -33,6 +35,9 @@ class SimpleRecyclerAdapter(private var stockList: List<TickerSummary>) : Recycl
         holder.price.text = ItemsViewModel.current_price.toString()
         holder.symbol.text = ItemsViewModel.symbol
         holder.percentage.text = ItemsViewModel.change_percent.toString()
+
+        val color = if (ItemsViewModel.change_percent < 0) R.color.red else R.color.green
+        holder.percentage.setTextColor(ContextCompat.getColor(context, color))
 
         // Load and display image using Picasso
         ItemsViewModel.logo_url.let {

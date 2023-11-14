@@ -11,7 +11,6 @@ import kotlinx.coroutines.Dispatchers
 import android.util.Log
 import kotlinx.coroutines.async
 import kotlinx.coroutines.*
-import retrofit2.await
 
 
 class BackendData {
@@ -20,90 +19,146 @@ class BackendData {
     private var tickersListDeferred: Deferred<List<String>>? = null
 
     init {
-        getSymbols()
-    }
-
-
-    private fun getSymbols() {
-        tickersListDeferred = coroutineScope.async {
-            val symbolsResponse = tickersAPI.getSymbols()
-            if (symbolsResponse.isSuccessful) {
-                symbolsResponse.body() ?: emptyList()
-            } else {
-                emptyList()
-            }
+        coroutineScope.launch {
+            getSymbols()
         }
     }
 
-    suspend fun getTickersList(): List<String> {
+
+    private suspend fun getSymbols() {
+        try {
+            tickersListDeferred = coroutineScope.async {
+                try {
+                    val symbolsResponse = tickersAPI.getSymbols()
+
+                    if (symbolsResponse.isSuccessful) {
+                        return@async symbolsResponse.body() ?: emptyList()
+                    } else {
+                        withContext(Dispatchers.Main) {
+                            Log.e("MyTag: ", "Failed to fetch symbols")
+                        }
+                        return@async emptyList()
+                    }
+                } catch (e: CancellationException) {
+                    throw e  // Propagate cancellation exception
+                } catch (e: Exception) {
+                    throw e
+                }
+            }
+
+            tickersListDeferred?.await()
+
+        } catch (e: CancellationException) {
+            // Handle cancellation, if needed
+            throw e  // Propagate cancellation exception
+        } catch (e: Exception) {
+            throw e
+        }
+    }
+
+    private suspend fun getTickersList(): List<String> {
         return tickersListDeferred?.await() ?: emptyList()
     }
 
-    suspend fun fetchNews(): List<News> {
-        val newsResponse : Response<List<News>>
-        newsResponse = tickersAPI.getNews()
-        var news :  List<News>?
+    suspend fun fetchNews(): List<News> = coroutineScope {
+        try {
+            val deferredNews = async {
+                try {
+                    val newsResponse: Response<List<News>> = tickersAPI.getNews()
 
-        if (newsResponse.isSuccessful){
-            news = newsResponse.body()
-        }
-        else{
-            Log.e("MyTag: ", "Failed to get news")
-            return emptyList()
-        }
-        if(news.isNullOrEmpty()){
-            return emptyList()
-        }
-        return news
+                    if (newsResponse.isSuccessful) {
+                        val news: List<News>? = newsResponse.body()
 
-    }
+                        if (news.isNullOrEmpty()) {
+                            return@async emptyList<News>()
+                        }
 
-    suspend fun fetchTickerDetailsList(): List<TickerDetails> {
-        val tickersList = getTickersList()
-        if (tickersList.isNullOrEmpty()) {
-            Log.e("MyTag: ", "Failed to fetch details for ticker: $tickersList")
-            return emptyList()
-        }
-
-        val symbolDetailsList = mutableListOf<TickerDetails>()
-
-        for (ticker in tickersList!!) {
-            val responseSymbolDetail: Response<TickerDetails> = tickersAPI.getSymbolDetails(ticker)
-            if (responseSymbolDetail.isSuccessful) {
-                val tickerDetails = responseSymbolDetail.body()
-                if (tickerDetails != null) {
-                    symbolDetailsList.add(tickerDetails)
+                        return@async news
+                    } else {
+                        withContext(Dispatchers.Main) {
+                            Log.e("MyTag: ", "Failed to get news")
+                        }
+                        return@async emptyList<News>()
+                    }
+                } catch (e: CancellationException) {
+                    throw e  // Propagate cancellation exception
+                } catch (e: Exception) {
+                    throw e
                 }
-            } else {
-                // Handle the error, log it, or throw a custom exception
-                Log.e("MyTag: ", "Failed to fetch details for ticker: $ticker")
             }
+
+            return@coroutineScope deferredNews.await()
+
+        } catch (e: CancellationException) {
+            // Handle cancellation, if needed
+            throw e  // Propagate cancellation exception
+        } catch (e: Exception) {
+            throw e
         }
-        return symbolDetailsList
     }
 
-    suspend fun fetchTickerSummary(): List<TickerSummary>{
-        val symbolSummaryList = mutableListOf<TickerSummary>()
-        val tickersList = getTickersList()
 
-        if (tickersList.isNullOrEmpty()) {
-            Log.e("MyTag: ", "Failed to fetch details for ticker: $tickersList")
-            return emptyList()
-        }
-        for (ticker in tickersList!!) {
-            val responseSymbolSummary: Response<TickerSummary> = tickersAPI.getSymbolSummary(ticker)
-            if (responseSymbolSummary.isSuccessful) {
-                val tickerSummary = responseSymbolSummary.body()
-                if (tickerSummary != null) {
-                    symbolSummaryList.add(tickerSummary)
+    suspend fun fetchTickerDetailsList(): List<TickerDetails> = coroutineScope {
+        try {
+            val tickersList = getTickersList() ?: return@coroutineScope emptyList()
+
+            val deferredDetails = tickersList.map { ticker ->
+                async {
+                    try {
+                        val responseSymbolDetail: Response<TickerDetails> = tickersAPI.getSymbolDetails(ticker)
+                        if (responseSymbolDetail.isSuccessful) {
+                            responseSymbolDetail.body()
+                        } else {
+                            withContext(Dispatchers.Main) {
+                                Log.e("MyTag: ", "Failed to fetch details for ticker: $ticker")
+                            }
+                            null
+                        }
+                    } catch (e: CancellationException) {
+                        throw e
+                    } catch (e: Exception) {
+                        throw e
+                    }
                 }
-            } else {
-                // Handle the error, log it, or throw a custom exception
-                Log.e("MyTag: ", "Failed to fetch summary for ticker: $ticker")
             }
+
+            return@coroutineScope deferredDetails.awaitAll().filterNotNull()
+
+        } catch (e: CancellationException) {
+            throw e
         }
-        Log.e("Summary : ", "Fetched $symbolSummaryList")
-        return symbolSummaryList
     }
+
+    suspend fun fetchTickerSummary(): List<TickerSummary> = coroutineScope {
+        try {
+            val tickersList = getTickersList() ?: return@coroutineScope emptyList()
+
+            val deferredSummary = tickersList.map { ticker ->
+                async {
+                    try {
+                        val responseSymbolSummary: Response<TickerSummary> = tickersAPI.getSymbolSummary(ticker)
+                        if (responseSymbolSummary.isSuccessful) {
+                            responseSymbolSummary.body()
+                        } else {
+                            withContext(Dispatchers.Main) {
+                                Log.e("MyTag: ", "Failed to fetch summary for ticker: $ticker")
+                            }
+                            null
+                        }
+                    } catch (e: CancellationException) {
+                        throw e
+                    } catch (e: Exception) {
+                        throw e
+                    }
+                }
+            }
+
+            return@coroutineScope deferredSummary.awaitAll().filterNotNull()
+
+        } catch (e: CancellationException) {
+            throw e
+        }
+    }
+
 
 }

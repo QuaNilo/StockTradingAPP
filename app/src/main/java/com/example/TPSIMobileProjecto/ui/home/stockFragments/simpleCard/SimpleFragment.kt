@@ -1,5 +1,6 @@
 package com.example.TPSIMobileProjecto.ui.home.stockFragments.simpleCard
 
+import android.content.Context
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.TPSIMobileProjecto.R
 import com.example.TPSIMobileProjecto.ui.home.stockFragments.sharedViewModels.SimpleChecklistSharedViewModel
 import com.example.TPSIMobileProjecto.ui.home.stockFragments.simpleCard.Adapter.SimpleRecyclerAdapter
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import retrofit.TickerDetails
 
 class SimpleCardFragment : Fragment() {
@@ -32,12 +35,7 @@ class SimpleCardFragment : Fragment() {
         Log.e("Lifecycle", "SimpleFragment onViewCreated()")
         viewModel = ViewModelProvider(this).get(SimpleCardViewModel::class.java)
         sharedViewModel = ViewModelProvider(requireActivity()).get(SimpleChecklistSharedViewModel::class.java) // Initialize the sharedViewModel
-
-        viewModel.tickerDetailsList.observe(viewLifecycleOwner, { tickerDetailsList ->
-            watchList.clear()
-            watchList.addAll(tickerDetailsList)
-        })
-
+        retrieveData()
     }
 
     override fun onPause() {
@@ -45,6 +43,11 @@ class SimpleCardFragment : Fragment() {
 
         super.onPause()
         sharedViewModel.setAddedItemsToChecklist(watchList)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        saveData()
     }
 
     override fun onStart() {
@@ -62,8 +65,28 @@ class SimpleCardFragment : Fragment() {
     }
     override fun onDestroyView() {
         super.onDestroyView()
-        viewModel.setTickerDetailsList(watchList)
+    }
+    private fun saveData() {
+        val sharedPreferences = requireContext().getSharedPreferences("MyWatchlist", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+
+        val gson = Gson()
+        val json = gson.toJson(watchList)
+
+        editor.putString("tickerList", json)
+        editor.apply()
     }
 
+    // Retrieve the data using SharedPreferences and Gson
+    private fun retrieveData() {
+        val sharedPreferences = requireContext().getSharedPreferences("MyWatchlist", Context.MODE_PRIVATE)
+        val json = sharedPreferences.getString("tickerList", "")
 
+        val gson = Gson()
+        val type = object : TypeToken<List<TickerDetails>>() {}.type
+
+        val savedList = gson.fromJson<List<TickerDetails>>(json, type) ?: emptyList()
+        watchList.clear()
+        watchList.addAll(savedList)
+    }
 }

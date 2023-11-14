@@ -1,4 +1,4 @@
-package com.example.TPSIMobileProjecto.ui.home.stockFragments.simpleCard.Adapter
+package com.example.TPSIMobileProjecto.ui.home.stockFragments.simpleCard
 
 import android.view.LayoutInflater
 import android.view.View

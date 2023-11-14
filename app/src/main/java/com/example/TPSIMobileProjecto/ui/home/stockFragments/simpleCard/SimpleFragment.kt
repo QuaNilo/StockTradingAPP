@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.TPSIMobileProjecto.R
 import com.example.TPSIMobileProjecto.ui.home.stockFragments.sharedViewModels.SimpleChecklistSharedViewModel
-import com.example.TPSIMobileProjecto.ui.home.stockFragments.simpleCard.Adapter.SimpleRecyclerAdapter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import retrofit.TickerDetails

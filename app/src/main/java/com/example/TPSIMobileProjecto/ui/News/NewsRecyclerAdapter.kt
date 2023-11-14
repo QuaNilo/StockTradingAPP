@@ -38,18 +38,17 @@ class NewsRecyclerAdapter(private var stockList: List<News>) : RecyclerView.Adap
         holder.description.text = newsItem.description
         holder.title.text = newsItem.title
 
-        holder.description.maxLines = 3
 
         // Button to change the lines displayed
         holder.description.post {
             val lineCount = holder.description.layout.lineCount
-            Log.e("Lines:", lineCount.toString())
+            holder.description.maxLines = 3
             if (lineCount < 3) {
                 holder.readMoreButton.visibility = View.GONE
             } else {
                 holder.readMoreButton.visibility = View.VISIBLE
                 holder.description.maxLines = 3
-        
+
                 // Button to change the lines displayed
                 holder.readMoreButton.setOnClickListener {
                     if (holder.description.maxLines == 3) {

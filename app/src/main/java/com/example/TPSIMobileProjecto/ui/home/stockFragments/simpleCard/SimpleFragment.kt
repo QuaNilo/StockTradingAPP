@@ -57,7 +57,7 @@ class SimpleCardFragment : Fragment() {
             watchList.clear()
             watchList.addAll(addedItems)
         }
-        val itemAdapter = SimpleRecyclerAdapter(watchList) // Initialize the adapter
+        val itemAdapter = SimpleRecyclerAdapter(requireContext(), watchList) // Initialize the adapter
         val recyclerView: RecyclerView = requireView().findViewById(R.id.recycleView)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = itemAdapter

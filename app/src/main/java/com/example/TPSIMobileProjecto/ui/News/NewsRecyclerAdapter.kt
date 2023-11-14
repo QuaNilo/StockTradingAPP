@@ -1,6 +1,7 @@
 package com.example.TPSIMobileProjecto.ui.News
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,13 +42,25 @@ class NewsRecyclerAdapter(private var stockList: List<News>) : RecyclerView.Adap
         holder.description.maxLines = 3
 
         // Button to change the lines displayed
-        holder.readMoreButton.setOnClickListener {
-            if (holder.description.maxLines == 3) {
-                holder.description.maxLines = Int.MAX_VALUE
-                holder.readMoreButton.text = "Read Less"
+        holder.description.post {
+            val lineCount = holder.description.layout.lineCount
+            Log.e("Lines:", lineCount.toString())
+            if (lineCount < 3) {
+                holder.readMoreButton.visibility = View.GONE
             } else {
+                holder.readMoreButton.visibility = View.VISIBLE
                 holder.description.maxLines = 3
-                holder.readMoreButton.text = "Read More"
+        
+                // Button to change the lines displayed
+                holder.readMoreButton.setOnClickListener {
+                    if (holder.description.maxLines == 3) {
+                        holder.description.maxLines = Int.MAX_VALUE
+                        holder.readMoreButton.text = "Read Less"
+                    } else {
+                        holder.description.maxLines = 3
+                        holder.readMoreButton.text = "Read More"
+                    }
+                }
             }
         }
         // Load and display image using Picasso

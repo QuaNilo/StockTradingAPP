@@ -6,6 +6,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.TPSIMobileProjecto.R
+import com.squareup.picasso.Picasso
 import retrofit.TickerSummary
 
 
@@ -28,10 +29,15 @@ class SimpleRecyclerAdapter(private var stockList: List<TickerSummary>) : Recycl
     // for each item in the RecyclerView
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val ItemsViewModel = stockList[position]
-        holder.imageView.setImageResource(R.drawable.ic_home_black_24dp)
+//        holder.imageView.setImageResource(R.drawable.ic_home_black_24dp)
         holder.price.text = ItemsViewModel.current_price.toString()
         holder.symbol.text = ItemsViewModel.symbol
         holder.percentage.text = ItemsViewModel.change_percent.toString()
+
+        // Load and display image using Picasso
+        ItemsViewModel.logo_url.let {
+            Picasso.get().load(it).into(holder.imageView)
+        }
     }
 
 

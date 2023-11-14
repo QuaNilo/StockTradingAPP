@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.TPSIMobileProjecto.R
 import com.squareup.picasso.Picasso
 import retrofit.News
-//import retrofit.TickerDetails
 
 
 class NewsRecyclerAdapter(private var stockList: List<News>) : RecyclerView.Adapter<NewsRecyclerAdapter.MyViewHolder>() {

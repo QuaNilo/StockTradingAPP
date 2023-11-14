@@ -13,14 +13,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.TPSIMobileProjecto.R
 import com.example.TPSIMobileProjecto.ui.home.stockFragments.checklist.ChecklistRecyclerAdapter
 import com.example.TPSIMobileProjecto.ui.home.stockFragments.sharedViewModels.SimpleChecklistSharedViewModel
-import retrofit.TickerDetails
+import retrofit.TickerSummary
 
 class ChecklistFragment : Fragment(), ChecklistRecyclerAdapter.ChecklistItemClickListener{
     private lateinit var viewModel: ChecklistViewModel
     private lateinit var sharedViewModel: SimpleChecklistSharedViewModel
-    private var watchList: MutableList<TickerDetails> = mutableListOf()
-    val symbolsDetailsList = mutableListOf<TickerDetails>()
-    val addedItemsList = mutableListOf<TickerDetails>()
+    private var watchList: MutableList<TickerSummary> = mutableListOf()
+    val symbolsSummaryList = mutableListOf<TickerSummary>()
     lateinit var progressBar: ProgressBar // Import ProgressBar if not done already
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,10 +34,14 @@ class ChecklistFragment : Fragment(), ChecklistRecyclerAdapter.ChecklistItemClic
         sharedViewModel = ViewModelProvider(requireActivity()).get(SimpleChecklistSharedViewModel::class.java) // Initialize the sharedViewModel
         progressBar = view.findViewById(R.id.progressBar)
         showProgressBar()
-        viewModel.symbolDetailsList.observe(viewLifecycleOwner) { symbolDetailsList ->
-            symbolsDetailsList.clear()
-            symbolsDetailsList.addAll(symbolDetailsList)
-            val itemAdapter = ChecklistRecyclerAdapter(requireContext(), symbolsDetailsList, addedItemsList) // Initialize the adapter
+        sharedViewModel.addedItemsChecklist.observe(viewLifecycleOwner) {addedItems ->
+            watchList.clear()
+            watchList.addAll(addedItems)
+        }
+        viewModel.symbolSummaryList.observe(viewLifecycleOwner) { symbolSummaryList ->
+            symbolsSummaryList.clear()
+            symbolsSummaryList.addAll(symbolSummaryList)
+            val itemAdapter = ChecklistRecyclerAdapter(requireContext(), symbolsSummaryList, watchList) // Initialize the adapter
             val recyclerView: RecyclerView = view.findViewById(R.id.recycleView)
             itemAdapter.setChecklistItemClickListener(this) // Set the item click listener
             recyclerView.layoutManager = LinearLayoutManager(context)
@@ -48,12 +51,27 @@ class ChecklistFragment : Fragment(), ChecklistRecyclerAdapter.ChecklistItemClic
 
     }
 
-    override fun onAddButtonClick(tickerDetails: TickerDetails) {
-        watchList.add(tickerDetails)
+    override fun onStart() {
+        super.onStart()
+        sharedViewModel.addedItemsChecklist.observe(viewLifecycleOwner) {addedItems ->
+            watchList.clear()
+            watchList.addAll(addedItems)
+        }
+    }
+    override fun onStop() {
+        super.onStop()
+        sharedViewModel.setAddedItemsToSimple(watchList)
     }
 
-    override fun onRemoveButtonClick(tickerDetails: TickerDetails) {
-        watchList.remove(tickerDetails)
+    override fun onDestroyView() {
+        super.onDestroyView()
+    }
+    override fun onAddButtonClick(tickerSummary: TickerSummary) {
+        watchList.add(tickerSummary)
+    }
+
+    override fun onRemoveButtonClick(tickerSummary: TickerSummary) {
+        watchList.remove(tickerSummary)
     }
 
 
@@ -63,22 +81,6 @@ class ChecklistFragment : Fragment(), ChecklistRecyclerAdapter.ChecklistItemClic
 
     fun hideProgressBar() {
         progressBar.visibility = View.GONE
-    }
-    override fun onStart() {
-        super.onStart()
-        sharedViewModel.addedItemsChecklist.observe(viewLifecycleOwner) {addedItems ->
-            addedItemsList.clear()
-            addedItemsList.addAll(addedItems)
-        }
-    }
-    override fun onPause() {
-        super.onPause()
-        sharedViewModel.setAddedItemsToSimple(watchList)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        sharedViewModel.setAddedItemsToSimple(watchList)
     }
 }
 

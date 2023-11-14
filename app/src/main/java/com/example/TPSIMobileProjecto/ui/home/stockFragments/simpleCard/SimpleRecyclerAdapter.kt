@@ -1,5 +1,4 @@
-package com.example.TPSIMobileProjecto.ui.home.stockFragments.simpleCard.Adapter
-
+package com.example.TPSIMobileProjecto.ui.home.stockFragments.simpleCard
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,10 +6,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.TPSIMobileProjecto.R
-import retrofit.TickerDetails
+import retrofit.TickerSummary
 
 
-class SimpleRecyclerAdapter(private var stockList: List<TickerDetails>) : RecyclerView.Adapter<SimpleRecyclerAdapter.MyViewHolder>() {
+class SimpleRecyclerAdapter(private var stockList: List<TickerSummary>) : RecyclerView.Adapter<SimpleRecyclerAdapter.MyViewHolder>() {
 
     // This method creates a new ViewHolder object for each item in the RecyclerView
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -30,10 +29,9 @@ class SimpleRecyclerAdapter(private var stockList: List<TickerDetails>) : Recycl
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val ItemsViewModel = stockList[position]
         holder.imageView.setImageResource(R.drawable.ic_home_black_24dp)
-        holder.price.text = ItemsViewModel.details.current_price.toString()
+        holder.price.text = ItemsViewModel.current_price.toString()
         holder.symbol.text = ItemsViewModel.symbol
-        holder.sector.text = ItemsViewModel.sector
-        holder.percentage.text = ItemsViewModel.details.change_percent.toString()
+        holder.percentage.text = ItemsViewModel.change_percent.toString()
     }
 
 
@@ -42,7 +40,6 @@ class SimpleRecyclerAdapter(private var stockList: List<TickerDetails>) : Recycl
         val imageView: ImageView = itemView.findViewById(R.id.imageview)
         val price: TextView = itemView.findViewById(R.id.tvPrice)
         val symbol: TextView = itemView.findViewById(R.id.tvSymbol)
-        val sector: TextView = itemView.findViewById(R.id.tvSector)
         val percentage : TextView = itemView.findViewById(R.id.tvPercentage)
     }
 }

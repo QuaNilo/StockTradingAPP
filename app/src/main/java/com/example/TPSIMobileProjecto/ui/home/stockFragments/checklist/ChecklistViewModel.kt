@@ -7,20 +7,20 @@ import com.example.TPSIMobileProjecto.BackendData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit.TickerDetails
+import retrofit.TickerSummary
 
 class ChecklistViewModel : ViewModel() {
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
     val data = BackendData()
 
-    // Define a LiveData property to hold symbolDetailsList
-    private val _symbolDetailsList = MutableLiveData<List<TickerDetails>>()
-    val symbolDetailsList: LiveData<List<TickerDetails>> get() = _symbolDetailsList
+    // Define a LiveData property to hold symbolSummaryList
+    private val _symbolSummaryList = MutableLiveData<List<TickerSummary>>()
+    val symbolSummaryList: LiveData<List<TickerSummary>> get() = _symbolSummaryList
 
     init {
         coroutineScope.launch {
-            val symbolDetailsList = data.fetchTickerDetailsList()
-            _symbolDetailsList.postValue(symbolDetailsList)
+            val symbolSummaryList = data.fetchTickerSummary()
+            _symbolSummaryList.postValue(symbolSummaryList)
         }
     }
 }

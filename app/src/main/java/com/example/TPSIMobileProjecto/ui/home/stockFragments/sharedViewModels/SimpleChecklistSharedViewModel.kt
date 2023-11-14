@@ -1,19 +1,19 @@
 package com.example.TPSIMobileProjecto.ui.home.stockFragments.sharedViewModels
 
 import androidx.lifecycle.MutableLiveData
-import retrofit.TickerDetails
 import androidx.lifecycle.ViewModel
+import retrofit.TickerSummary
 
 class SimpleChecklistSharedViewModel : ViewModel() {
-    val addedItemsSimple = MutableLiveData<List<TickerDetails>>()
-    val addedItemsChecklist = MutableLiveData<List<TickerDetails>>()
+    val addedItemsSimple = MutableLiveData<List<TickerSummary>>()
+    val addedItemsChecklist = MutableLiveData<List<TickerSummary>>()
 
 
-    fun setAddedItemsToSimple(items: MutableList<TickerDetails>) {
+    fun setAddedItemsToSimple(items: MutableList<TickerSummary>) {
         addedItemsSimple.value = items
     }
 
-    fun setAddedItemsToChecklist(items: MutableList<TickerDetails>) {
+    fun setAddedItemsToChecklist(items: MutableList<TickerSummary>) {
         addedItemsChecklist.value = items
     }
 }

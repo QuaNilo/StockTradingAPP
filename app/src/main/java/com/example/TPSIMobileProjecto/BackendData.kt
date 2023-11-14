@@ -58,8 +58,6 @@ class BackendData {
 
     }
 
-    //TODO Create method to get a single Ticker detail
-
     suspend fun fetchTickerDetailsList(): List<TickerDetails> {
         val tickersList = getTickersList()
         if (tickersList.isNullOrEmpty()) {
@@ -84,7 +82,28 @@ class BackendData {
         return symbolDetailsList
     }
 
-    fun fetchTickerSummary(){}
-    //TODO Implement fetchTickerSummary
+    suspend fun fetchTickerSummary(): List<TickerSummary>{
+        val symbolSummaryList = mutableListOf<TickerSummary>()
+        val tickersList = getTickersList()
+
+        if (tickersList.isNullOrEmpty()) {
+            Log.e("MyTag: ", "Failed to fetch details for ticker: $tickersList")
+            return emptyList()
+        }
+        for (ticker in tickersList!!) {
+            val responseSymbolSummary: Response<TickerSummary> = tickersAPI.getSymbolSummary(ticker)
+            if (responseSymbolSummary.isSuccessful) {
+                val tickerSummary = responseSymbolSummary.body()
+                if (tickerSummary != null) {
+                    symbolSummaryList.add(tickerSummary)
+                }
+            } else {
+                // Handle the error, log it, or throw a custom exception
+                Log.e("MyTag: ", "Failed to fetch summary for ticker: $ticker")
+            }
+        }
+        Log.e("Summary : ", "Fetched $symbolSummaryList")
+        return symbolSummaryList
+    }
 
 }

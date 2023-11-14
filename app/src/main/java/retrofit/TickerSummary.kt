@@ -1,8 +1,8 @@
 package retrofit
 
 data class TickerSummary(
-    val change_percentage : Float,
-    val current_price : Float,
+    val change_percent : Double,
+    val current_price : Double,
     val logo_url : String,
-    val Symbol : String
+    val symbol : String
 )

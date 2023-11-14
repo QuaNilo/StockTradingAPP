@@ -14,11 +14,11 @@ import com.example.TPSIMobileProjecto.R
 import com.example.TPSIMobileProjecto.ui.home.stockFragments.sharedViewModels.SimpleChecklistSharedViewModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import retrofit.TickerDetails
+import retrofit.TickerSummary
 
 class SimpleCardFragment : Fragment() {
 
-    private var watchList: MutableList<TickerDetails> = mutableListOf()
+    private var watchList: MutableList<TickerSummary> = mutableListOf()
     private lateinit var viewModel: SimpleCardViewModel
     private lateinit var sharedViewModel: SimpleChecklistSharedViewModel
 
@@ -66,7 +66,7 @@ class SimpleCardFragment : Fragment() {
         super.onDestroyView()
     }
     private fun saveData() {
-        val sharedPreferences = requireContext().getSharedPreferences("MyWatchlist", Context.MODE_PRIVATE)
+        val sharedPreferences = requireContext().getSharedPreferences("Watchlist", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
 
         val gson = Gson()
@@ -78,13 +78,13 @@ class SimpleCardFragment : Fragment() {
 
     // Retrieve the data using SharedPreferences and Gson
     private fun retrieveData() {
-        val sharedPreferences = requireContext().getSharedPreferences("MyWatchlist", Context.MODE_PRIVATE)
+        val sharedPreferences = requireContext().getSharedPreferences("Watchlist", Context.MODE_PRIVATE)
         val json = sharedPreferences.getString("tickerList", "")
 
         val gson = Gson()
-        val type = object : TypeToken<List<TickerDetails>>() {}.type
+        val type = object : TypeToken<List<TickerSummary>>() {}.type
 
-        val savedList = gson.fromJson<List<TickerDetails>>(json, type) ?: emptyList()
+        val savedList = gson.fromJson<List<TickerSummary>>(json, type) ?: emptyList()
         watchList.clear()
         watchList.addAll(savedList)
     }

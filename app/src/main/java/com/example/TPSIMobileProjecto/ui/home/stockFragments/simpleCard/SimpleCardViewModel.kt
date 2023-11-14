@@ -4,20 +4,14 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.TPSIMobileProjecto.BackendData
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import retrofit.RetrofitHelper
-import retrofit.TickerDetails
-import retrofit.retrofitInterface
+import retrofit.TickerSummary
+
 
 class SimpleCardViewModel : ViewModel() {
-    private val _tickerDetailsList = MutableLiveData<List<TickerDetails>>()
-    val tickerDetailsList: LiveData<List<TickerDetails>> get() = _tickerDetailsList
+    private val _tickerSummaryList = MutableLiveData<List<TickerSummary>>()
+    val tickerSummaryList: LiveData<List<TickerSummary>> get() = _tickerSummaryList
 
-    fun setTickerDetailsList(list: List<TickerDetails>) {
-        _tickerDetailsList.value = list
+    fun setTickerSummaryList(list: List<TickerSummary>) {
+        _tickerSummaryList.value = list
     }
 }

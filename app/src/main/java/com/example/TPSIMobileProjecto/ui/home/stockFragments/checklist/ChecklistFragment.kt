@@ -13,13 +13,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.TPSIMobileProjecto.R
 import com.example.TPSIMobileProjecto.ui.home.stockFragments.checklist.ChecklistRecyclerAdapter
 import com.example.TPSIMobileProjecto.ui.home.stockFragments.sharedViewModels.SimpleChecklistSharedViewModel
-import retrofit.TickerDetails
+import retrofit.TickerSummary
 
 class ChecklistFragment : Fragment(), ChecklistRecyclerAdapter.ChecklistItemClickListener{
     private lateinit var viewModel: ChecklistViewModel
     private lateinit var sharedViewModel: SimpleChecklistSharedViewModel
-    private var watchList: MutableList<TickerDetails> = mutableListOf()
-    val symbolsDetailsList = mutableListOf<TickerDetails>()
+    private var watchList: MutableList<TickerSummary> = mutableListOf()
+    val symbolsSummaryList = mutableListOf<TickerSummary>()
     lateinit var progressBar: ProgressBar // Import ProgressBar if not done already
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,10 +38,10 @@ class ChecklistFragment : Fragment(), ChecklistRecyclerAdapter.ChecklistItemClic
             watchList.clear()
             watchList.addAll(addedItems)
         }
-        viewModel.symbolDetailsList.observe(viewLifecycleOwner) { symbolDetailsList ->
-            symbolsDetailsList.clear()
-            symbolsDetailsList.addAll(symbolDetailsList)
-            val itemAdapter = ChecklistRecyclerAdapter(requireContext(), symbolsDetailsList, watchList) // Initialize the adapter
+        viewModel.symbolSummaryList.observe(viewLifecycleOwner) { symbolSummaryList ->
+            symbolsSummaryList.clear()
+            symbolsSummaryList.addAll(symbolSummaryList)
+            val itemAdapter = ChecklistRecyclerAdapter(requireContext(), symbolsSummaryList, watchList) // Initialize the adapter
             val recyclerView: RecyclerView = view.findViewById(R.id.recycleView)
             itemAdapter.setChecklistItemClickListener(this) // Set the item click listener
             recyclerView.layoutManager = LinearLayoutManager(context)
@@ -66,12 +66,12 @@ class ChecklistFragment : Fragment(), ChecklistRecyclerAdapter.ChecklistItemClic
     override fun onDestroyView() {
         super.onDestroyView()
     }
-    override fun onAddButtonClick(tickerDetails: TickerDetails) {
-        watchList.add(tickerDetails)
+    override fun onAddButtonClick(tickerSummary: TickerSummary) {
+        watchList.add(tickerSummary)
     }
 
-    override fun onRemoveButtonClick(tickerDetails: TickerDetails) {
-        watchList.remove(tickerDetails)
+    override fun onRemoveButtonClick(tickerSummary: TickerSummary) {
+        watchList.remove(tickerSummary)
     }
 
 

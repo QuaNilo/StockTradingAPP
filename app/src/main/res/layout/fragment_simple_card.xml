@@ -14,6 +14,7 @@
         android:id="@+id/recycleView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingRight="15dp"
         tools:listitem="@layout/layout_simple_card" />
 
 </LinearLayout>

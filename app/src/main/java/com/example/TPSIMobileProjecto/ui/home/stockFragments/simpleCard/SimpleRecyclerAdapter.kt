@@ -31,7 +31,6 @@ class SimpleRecyclerAdapter(private val context: Context, private var stockList:
     // for each item in the RecyclerView
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val ItemsViewModel = stockList[position]
-//        holder.imageView.setImageResource(R.drawable.ic_home_black_24dp)
         holder.price.text = ItemsViewModel.current_price.toString()
         holder.symbol.text = ItemsViewModel.symbol
         holder.percentage.text = ItemsViewModel.change_percent.toString()

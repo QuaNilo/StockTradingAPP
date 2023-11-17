@@ -5,10 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.TPSIMobileProjecto.R
+import com.squareup.picasso.Picasso
 import retrofit.TickerSummary
 
 
@@ -34,10 +36,16 @@ class ChecklistRecyclerAdapter(private val context: Context, private var stockLi
     // for each item in the RecyclerView
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val ItemsViewModel = stockList[position]
-//        holder.imageView.setImageResource(R.drawable.ic_home_black_24dp)
         holder.price.text = ItemsViewModel.current_price.toString()
         holder.symbol.text = ItemsViewModel.symbol
-        holder.percentage.text = ItemsViewModel.current_price.toString()
+        holder.percentage.text = ItemsViewModel.change_percent.toString()
+
+        ItemsViewModel.logo_url.let {
+            Picasso.get().load(it).into(holder.imageView)
+        }
+
+        val color = if (ItemsViewModel.change_percent < 0) R.color.red else R.color.green
+        holder.percentage.setTextColor(ContextCompat.getColor(context, color))
 
         val isInWatchList = addedItems.any { it.symbol == ItemsViewModel.symbol }
         holder.addButton.text = "Remove"
@@ -70,6 +78,7 @@ class ChecklistRecyclerAdapter(private val context: Context, private var stockLi
         val symbol: TextView = itemView.findViewById(R.id.tvSymbolChecklist)
         val percentage : TextView = itemView.findViewById(R.id.tvPercentageChecklist)
         val addButton : Button = itemView.findViewById(R.id.btnAddChecklist)
+        val imageView : ImageView = itemView.findViewById(R.id.imgViewLogoChecklist)
     }
     fun setChecklistItemClickListener(listener: ChecklistItemClickListener) {
         clickListener = listener

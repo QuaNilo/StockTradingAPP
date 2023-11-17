@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.ProgressBar
+import androidx.core.content.ContextCompat
 import com.example.TPSIMobileProjecto.R
 import com.example.TPSIMobileProjecto.ui.News.NewsFragment
 import com.example.TPSIMobileProjecto.ui.home.stockFragments.simpleCard.SimpleCardFragment
@@ -63,8 +64,10 @@ class DetailedCardFragment(tickerSummary: TickerSummary) : Fragment() {
                 percentage.text = ticker.details?.change_percent.toString()
                 ticker.logo_url?.let {
                     Picasso.get().load(it).into(imageView)
-                hideProgressBar()
                 }
+                val color = if (ticker.details.change_percent < 0) R.color.red else R.color.green
+                percentage.setTextColor(ContextCompat.getColor(requireContext(), color))
+                hideProgressBar()
             }
         }
 

@@ -13,7 +13,6 @@ import android.widget.TextView
 import android.widget.ProgressBar
 import androidx.core.content.ContextCompat
 import com.example.TPSIMobileProjecto.R
-import com.example.TPSIMobileProjecto.ui.News.NewsFragment
 import com.example.TPSIMobileProjecto.ui.home.stockFragments.simpleCard.SimpleCardFragment
 import com.jjoe64.graphview.GraphView
 import com.jjoe64.graphview.series.DataPoint

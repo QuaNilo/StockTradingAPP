@@ -8,19 +8,25 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.TPSIMobileProjecto.R
+import com.example.TPSIMobileProjecto.ui.home.stockFragments.detailedCard.DetailedCardFragment
 import com.example.TPSIMobileProjecto.ui.home.stockFragments.sharedViewModels.SimpleChecklistSharedViewModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.channels.ticker
 import retrofit.TickerSummary
 
-class SimpleCardFragment : Fragment() {
+class SimpleCardFragment : Fragment(), SimpleRecyclerAdapter.DetailedViewOnClick {
 
     private var watchList: MutableList<TickerSummary> = mutableListOf()
     private lateinit var viewModel: SimpleCardViewModel
-    private lateinit var sharedViewModel: SimpleChecklistSharedViewModel
+//    private lateinit var sharedViewModel: SimpleChecklistSharedViewModel
+    private val sharedViewModel: SimpleChecklistSharedViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,7 +39,7 @@ class SimpleCardFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         Log.e("Lifecycle", "SimpleFragment onViewCreated()")
         viewModel = ViewModelProvider(this).get(SimpleCardViewModel::class.java)
-        sharedViewModel = ViewModelProvider(requireActivity()).get(SimpleChecklistSharedViewModel::class.java) // Initialize the sharedViewModel
+//        sharedViewModel = ViewModelProvider(requireActivity()).get(SimpleChecklistSharedViewModel::class.java) // Initialize the sharedViewModel
         retrieveData()
     }
 
@@ -59,6 +65,7 @@ class SimpleCardFragment : Fragment() {
         }
         val itemAdapter = SimpleRecyclerAdapter(requireContext(), watchList) // Initialize the adapter
         val recyclerView: RecyclerView = requireView().findViewById(R.id.recycleView)
+        itemAdapter.setDetailedItemClickListener(this)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = itemAdapter
     }
@@ -66,7 +73,7 @@ class SimpleCardFragment : Fragment() {
         super.onDestroyView()
     }
     private fun saveData() {
-        val sharedPreferences = requireContext().getSharedPreferences("Watchlist", Context.MODE_PRIVATE)
+        val sharedPreferences = requireContext().getSharedPreferences("userWatchlist", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
 
         val gson = Gson()
@@ -78,7 +85,7 @@ class SimpleCardFragment : Fragment() {
 
     // Retrieve the data using SharedPreferences and Gson
     private fun retrieveData() {
-        val sharedPreferences = requireContext().getSharedPreferences("Watchlist", Context.MODE_PRIVATE)
+        val sharedPreferences = requireContext().getSharedPreferences("userWatchlist", Context.MODE_PRIVATE)
         val json = sharedPreferences.getString("tickerList", "")
 
         val gson = Gson()
@@ -87,5 +94,19 @@ class SimpleCardFragment : Fragment() {
         val savedList = gson.fromJson<List<TickerSummary>>(json, type) ?: emptyList()
         watchList.clear()
         watchList.addAll(savedList)
+    }
+
+
+    override fun onDetailedViewClick(tickerSummary: TickerSummary) {
+        Log.e("Tag", "Arrived on SimpleFragment")
+
+        // Access the parent fragment's FragmentManager
+        val parentFragmentManager = parentFragmentManager
+
+        // Start a fragment transaction and replace the fragment in R.id.display_fragment
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.display_fragment, DetailedCardFragment(tickerSummary))
+            .addToBackStack(null)
+            .commit()
     }
 }

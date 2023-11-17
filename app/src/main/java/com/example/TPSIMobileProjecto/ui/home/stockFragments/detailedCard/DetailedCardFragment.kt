@@ -11,13 +11,11 @@ import com.example.TPSIMobileProjecto.R
 import com.jjoe64.graphview.GraphView
 import com.jjoe64.graphview.series.DataPoint
 import com.jjoe64.graphview.series.LineGraphSeries
+import retrofit.TickerSummary
 
-class DetailedCardFragment : Fragment() {
+class DetailedCardFragment(tickerSummary: TickerSummary) : Fragment() {
 
-    companion object {
-        fun newInstance() = DetailedCardFragment()
-    }
-
+    private val data = tickerSummary
     private lateinit var viewModel: DetailedCardViewModel
 
     override fun onCreateView(
@@ -29,7 +27,7 @@ class DetailedCardFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.e("Lifecycle", "DetailedFragment onViewCreated()")
-
+        Log.e("tag", data.toString())
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(DetailedCardViewModel::class.java)
         // TODO: Use the ViewModel

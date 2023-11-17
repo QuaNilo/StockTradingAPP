@@ -1,5 +1,6 @@
 package com.example.TPSIMobileProjecto.ui.home.stockFragments.simpleCard
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,12 +9,13 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.TPSIMobileProjecto.R
+import com.example.TPSIMobileProjecto.ui.home.stockFragments.checklist.ChecklistRecyclerAdapter
 import com.squareup.picasso.Picasso
 import retrofit.TickerSummary
 
 
 class SimpleRecyclerAdapter(private val context: Context, private var stockList: List<TickerSummary>) : RecyclerView.Adapter<SimpleRecyclerAdapter.MyViewHolder>() {
-
+    private var clickListener: DetailedViewOnClick? = null
     // This method creates a new ViewHolder object for each item in the RecyclerView
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         // Inflate the layout for each item and return a new ViewHolder object
@@ -42,6 +44,13 @@ class SimpleRecyclerAdapter(private val context: Context, private var stockList:
         ItemsViewModel.logo_url.let {
             Picasso.get().load(it).into(holder.imageView)
         }
+
+        holder.itemView.setOnClickListener {
+            Log.e("Tag", "Clicked item $ItemsViewModel")
+            clickListener?.onDetailedViewClick(ItemsViewModel)
+        }
+
+
     }
 
 
@@ -51,5 +60,12 @@ class SimpleRecyclerAdapter(private val context: Context, private var stockList:
         val price: TextView = itemView.findViewById(R.id.tvPrice)
         val symbol: TextView = itemView.findViewById(R.id.tvSymbol)
         val percentage : TextView = itemView.findViewById(R.id.tvPercentage)
+    }
+    fun setDetailedItemClickListener(listener: SimpleRecyclerAdapter.DetailedViewOnClick) {
+        clickListener = listener
+    }
+    interface DetailedViewOnClick {
+        fun onDetailedViewClick(tickerSummary: TickerSummary)
+
     }
 }

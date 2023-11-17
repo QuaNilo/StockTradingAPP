@@ -1,20 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/simple_card_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/simple_card_fragment"
     android:orientation="vertical"
     tools:context=".ui.home.stockFragments.simpleCard.SimpleCardFragment">
 
     <!-- RecyclerView -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycleView"
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/btnChecklist"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingRight="15dp"
-        tools:listitem="@layout/layout_simple_card" />
+        android:text="Button" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycleView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingRight="15dp"
+            tools:listitem="@layout/layout_simple_card" />
+
+    </FrameLayout>
 
 </LinearLayout>

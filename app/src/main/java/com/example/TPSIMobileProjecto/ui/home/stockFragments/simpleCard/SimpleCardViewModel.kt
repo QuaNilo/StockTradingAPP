@@ -8,10 +8,10 @@ import retrofit.TickerSummary
 
 
 class SimpleCardViewModel : ViewModel() {
-    private val _tickerSummaryList = MutableLiveData<List<TickerSummary>>()
-    val tickerSummaryList: LiveData<List<TickerSummary>> get() = _tickerSummaryList
-
-    fun setTickerSummaryList(list: List<TickerSummary>) {
-        _tickerSummaryList.value = list
-    }
+//    private val _tickerSummaryList = MutableLiveData<List<TickerSummary>>()
+//    val tickerSummaryList: LiveData<List<TickerSummary>> get() = _tickerSummaryList
+//
+//    fun setTickerSummaryList(list: List<TickerSummary>) {
+//        _tickerSummaryList.value = list
+//    }
 }

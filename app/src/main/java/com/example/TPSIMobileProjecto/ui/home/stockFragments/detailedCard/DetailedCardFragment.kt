@@ -12,6 +12,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.ProgressBar
 import com.example.TPSIMobileProjecto.R
+import com.example.TPSIMobileProjecto.ui.News.NewsFragment
+import com.example.TPSIMobileProjecto.ui.home.stockFragments.simpleCard.SimpleCardFragment
 import com.jjoe64.graphview.GraphView
 import com.jjoe64.graphview.series.DataPoint
 import com.jjoe64.graphview.series.LineGraphSeries
@@ -51,6 +53,7 @@ class DetailedCardFragment(tickerSummary: TickerSummary) : Fragment() {
             val sector : TextView = view.findViewById(R.id.tvSectorDetailed)
             val imageView : ImageView = view.findViewById(R.id.imageviewDetailed)
             lineGraphView = view.findViewById(R.id.idGraphView)
+            lineGraphView.visibility = View.GONE
 
             if (ticker != null) {
                 populateGraph(ticker, lineGraphView)
@@ -60,17 +63,19 @@ class DetailedCardFragment(tickerSummary: TickerSummary) : Fragment() {
                 percentage.text = ticker.details?.change_percent.toString()
                 ticker.logo_url?.let {
                     Picasso.get().load(it).into(imageView)
+                hideProgressBar()
                 }
             }
-            hideProgressBar()
         }
 
-        val button: Button = requireActivity().findViewById(R.id.btnChecklist)
+        val button: Button = view.findViewById(R.id.btnHome)
         button.text = "HOME"
-
-
-
-
+        button.setOnClickListener {
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.display_fragment, SimpleCardFragment(mutableListOf(), false))
+            .addToBackStack(null)
+            .commit()
+        }
 
 
     }
@@ -100,6 +105,7 @@ class DetailedCardFragment(tickerSummary: TickerSummary) : Fragment() {
 
         // Add the series to the graph
         graph.addSeries(series)
+        graph.visibility = View.VISIBLE
     }
     fun showProgressBar() {
         progressBar.visibility = View.VISIBLE

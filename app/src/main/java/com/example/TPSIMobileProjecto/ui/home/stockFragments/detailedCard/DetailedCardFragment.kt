@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.ProgressBar
@@ -22,7 +23,7 @@ class DetailedCardFragment(tickerSummary: TickerSummary) : Fragment() {
     lateinit var progressBar: ProgressBar
     private val data = tickerSummary
     private var tickerDetailedList: MutableList<TickerDetails> = mutableListOf()
-
+    lateinit var lineGraphView: GraphView
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,7 +35,8 @@ class DetailedCardFragment(tickerSummary: TickerSummary) : Fragment() {
         Log.e("Lifecycle", "DetailedFragment onViewCreated()")
         super.onViewCreated(view, savedInstanceState)
         val viewModel = ViewModelProvider(this).get(DetailedCardViewModel::class.java)
-        val graphlist : List<GraphData>
+
+
         progressBar = view.findViewById(R.id.progressBarDetailed)
         showProgressBar()
         viewModel.symbolDetailsList.observe(viewLifecycleOwner){ symbolDetails ->
@@ -48,8 +50,10 @@ class DetailedCardFragment(tickerSummary: TickerSummary) : Fragment() {
             val percentage : TextView = view.findViewById(R.id.tvPercentDetailed)
             val sector : TextView = view.findViewById(R.id.tvSectorDetailed)
             val imageView : ImageView = view.findViewById(R.id.imageviewDetailed)
+            lineGraphView = view.findViewById(R.id.idGraphView)
 
             if (ticker != null) {
+                populateGraph(ticker, lineGraphView)
                 sector.text = ticker.sector
                 price.text = ticker.details?.current_price.toString()
                 symbol.text = ticker.symbol
@@ -61,6 +65,9 @@ class DetailedCardFragment(tickerSummary: TickerSummary) : Fragment() {
             hideProgressBar()
         }
 
+        val button: Button = requireActivity().findViewById(R.id.btnChecklist)
+        button.text = "HOME"
+
 
 
 
@@ -68,6 +75,32 @@ class DetailedCardFragment(tickerSummary: TickerSummary) : Fragment() {
 
     }
 
+    fun populateGraph(ticker: TickerDetails, graph: GraphView) {
+        val graphList = mutableListOf<DataPoint>()
+
+        for ((index, value) in ticker.chart_data.October_2022.withIndex()) {
+            graphList.add(DataPoint(index.toDouble(), value))
+        }
+
+        val series: LineGraphSeries<DataPoint> = LineGraphSeries(graphList.toTypedArray())
+
+        // Set manual bounds for X-axis to match the data range.
+        graph.viewport.setXAxisBoundsManual(true)
+        graph.viewport.setMinX(0.0)
+        graph.viewport.setMaxX(graphList.size.toDouble() - 1)
+
+        // Set other viewport settings
+        graph.viewport.isScrollable = true
+        graph.viewport.isScalable = true
+        graph.viewport.setScalableY(true)
+        graph.viewport.setScrollableY(true)
+
+        // Set color for the series
+        series.color = R.color.purple_200
+
+        // Add the series to the graph
+        graph.addSeries(series)
+    }
     fun showProgressBar() {
         progressBar.visibility = View.VISIBLE
     }

@@ -16,7 +16,7 @@ import retrofit.TickerSummary
 
 class ChecklistRecyclerAdapter(private val context: Context, private var stockList: List<TickerSummary>, private var addedItems : List<TickerSummary>) : RecyclerView.Adapter<ChecklistRecyclerAdapter.MyViewHolder>() {
     // This method creates a new ViewHolder object for each item in the RecyclerView
-
+    private var filteredList: List<TickerSummary> = stockList
     private var clickListener: ChecklistItemClickListener? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         // Inflate the layout for each item and return a new ViewHolder object
@@ -87,6 +87,12 @@ class ChecklistRecyclerAdapter(private val context: Context, private var stockLi
         fun onAddButtonClick(tickerSummary: TickerSummary)
         fun onRemoveButtonClick(tickerSummary: TickerSummary)
 
+    }
+
+
+    fun filter(filteredList : List<TickerSummary>) {
+        this.stockList = filteredList
+        notifyDataSetChanged()
     }
 }
 

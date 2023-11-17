@@ -13,77 +13,104 @@
 
         <ImageView
             android:id="@+id/imageviewDetailed"
-            android:layout_width="232dp"
-            android:layout_height="137dp"
+            android:layout_width="226dp"
+            android:layout_height="110dp"
 
             android:layout_marginBottom="238dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.458"
+            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.044" />
+            app:layout_constraintVertical_bias="0.138" />
 
         <ProgressBar
             android:id="@+id/progressBarDetailed"
             style="?android:attr/progressBarStyle"
             android:layout_width="109dp"
             android:layout_height="156dp"
-            android:layout_marginTop="164dp"
+            android:layout_marginTop="272dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.463"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvSymbolDetailed"
-            android:layout_width="84dp"
-            android:layout_height="37dp"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:textAlignment="center"
             android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.458"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageviewDetailed"
-            app:layout_constraintVertical_bias="0.022" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.239" />
 
         <TextView
             android:id="@+id/tvPriceDetailed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="22dp"
+            android:layout_width="103dp"
+            android:layout_height="40dp"
+            android:textAlignment="center"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.087"
+            app:layout_constraintHorizontal_bias="0.051"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvSectorDetailed"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.293" />
 
         <TextView
             android:id="@+id/tvPercentDetailed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="22dp"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:textAlignment="center"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.911"
+            app:layout_constraintHorizontal_bias="0.948"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvSectorDetailed"
-            app:layout_constraintVertical_bias="0.002" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.293" />
 
         <TextView
             android:id="@+id/tvSectorDetailed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:textAlignment="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.464"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvSymbolDetailed"
-            app:layout_constraintVertical_bias="0.025" />
+            app:layout_constraintVertical_bias="0.0" />
+
+        <com.jjoe64.graphview.GraphView
+            android:id="@+id/idGraphView"
+            android:layout_width="340dp"
+            android:layout_height="352dp"
+            android:layout_marginHorizontal="20sp"
+            android:layout_marginVertical="20sp"
+            android:layout_marginEnd="10sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.573"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.852" />
+
+        <Button
+            android:id="@+id/btnHome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.504"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.007" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

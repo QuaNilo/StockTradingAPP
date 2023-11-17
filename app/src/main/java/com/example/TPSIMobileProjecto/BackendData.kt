@@ -11,7 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import android.util.Log
 import kotlinx.coroutines.async
 import kotlinx.coroutines.*
-import retrofit2.await
+import java.lang.Exception
 
 
 class BackendData {
@@ -25,13 +25,18 @@ class BackendData {
 
 
     private fun getSymbols() {
-        tickersListDeferred = coroutineScope.async {
-            val symbolsResponse = tickersAPI.getSymbols()
-            if (symbolsResponse.isSuccessful) {
-                symbolsResponse.body() ?: emptyList()
-            } else {
-                emptyList()
+        try {
+            tickersListDeferred = coroutineScope.async {
+                val symbolsResponse = tickersAPI.getSymbols()
+                if (symbolsResponse.isSuccessful) {
+                    symbolsResponse.body() ?: emptyList()
+                } else {
+                    emptyList()
+                }
             }
+
+        }catch (e : Exception){
+            throw e
         }
     }
 
@@ -40,51 +45,85 @@ class BackendData {
     }
 
     suspend fun fetchNews(): List<News> {
-        val newsResponse : Response<List<News>>
-        newsResponse = tickersAPI.getNews()
-        var news :  List<News>?
+        try {
+            val newsResponse: Response<List<News>>
+            newsResponse = tickersAPI.getNews()
+            var news: List<News>?
 
-        if (newsResponse.isSuccessful){
-            news = newsResponse.body()
+            if (newsResponse.isSuccessful) {
+                news = newsResponse.body()
+            } else {
+                Log.e("MyTag: ", "Failed to get news")
+                return emptyList()
+            }
+            if (news.isNullOrEmpty()) {
+                return emptyList()
+            }
+            return news
+
+        }catch (e : Exception){
+            throw e
         }
-        else{
-            Log.e("MyTag: ", "Failed to get news")
-            return emptyList()
-        }
-        if(news.isNullOrEmpty()){
-            return emptyList()
-        }
-        return news
 
     }
-
-    //TODO Create method to get a single Ticker detail
 
     suspend fun fetchTickerDetailsList(): List<TickerDetails> {
-        val tickersList = getTickersList()
-        if (tickersList.isNullOrEmpty()) {
-            Log.e("MyTag: ", "Failed to fetch details for ticker: $tickersList")
-            return emptyList()
-        }
-
-        val symbolDetailsList = mutableListOf<TickerDetails>()
-
-        for (ticker in tickersList!!) {
-            val responseSymbolDetail: Response<TickerDetails> = tickersAPI.getSymbolDetails(ticker)
-            if (responseSymbolDetail.isSuccessful) {
-                val tickerDetails = responseSymbolDetail.body()
-                if (tickerDetails != null) {
-                    symbolDetailsList.add(tickerDetails)
-                }
-            } else {
-                // Handle the error, log it, or throw a custom exception
-                Log.e("MyTag: ", "Failed to fetch details for ticker: $ticker")
+        try{
+            val tickersList = getTickersList()
+            if (tickersList.isNullOrEmpty()) {
+                Log.e("MyTag: ", "Failed to fetch details for ticker: $tickersList")
+                return emptyList()
             }
+
+            val symbolDetailsList = mutableListOf<TickerDetails>()
+
+            for (ticker in tickersList!!) {
+                val responseSymbolDetail: Response<TickerDetails> = tickersAPI.getSymbolDetails(ticker)
+                if (responseSymbolDetail.isSuccessful) {
+                    val tickerDetails = responseSymbolDetail.body()
+                    if (tickerDetails != null) {
+                        symbolDetailsList.add(tickerDetails)
+                    }
+                } else {
+                    // Handle the error, log it, or throw a custom exception
+                    Log.e("MyTag: ", "Failed to fetch details for ticker: $ticker")
+                }
+            }
+            return symbolDetailsList
+
+        }catch (e: Exception){
+            throw e
         }
-        return symbolDetailsList
     }
 
-    fun fetchTickerSummary(){}
-    //TODO Implement fetchTickerSummary
+    suspend fun fetchTickerSummary(): List<TickerSummary> {
+        try {
+            val symbolSummaryList = mutableListOf<TickerSummary>()
+            val tickersList = getTickersList()
 
+            if (tickersList.isNullOrEmpty()) {
+                Log.e("MyTag: ", "Failed to fetch details for ticker: $tickersList")
+                return emptyList()
+            }
+            for (ticker in tickersList!!) {
+                val responseSymbolSummary: Response<TickerSummary> =
+                    tickersAPI.getSymbolSummary(ticker)
+                if (responseSymbolSummary.isSuccessful) {
+                    val tickerSummary = responseSymbolSummary.body()
+                    if (tickerSummary != null) {
+                        symbolSummaryList.add(tickerSummary)
+                    }
+                } else {
+                    // Handle the error, log it, or throw a custom exception
+                    Log.e("MyTag: ", "Failed to fetch summary for ticker: $ticker")
+                }
+            }
+            Log.e("Summary : ", "Fetched $symbolSummaryList")
+            return symbolSummaryList
+        } catch (e: Exception) {
+            throw e
+        }
+
+
+    }
 }

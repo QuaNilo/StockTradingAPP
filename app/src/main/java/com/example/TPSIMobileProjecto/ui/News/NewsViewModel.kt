@@ -8,7 +8,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit.News
-import retrofit.TickerDetails
 
 class NewsViewModel : ViewModel() {
     private val coroutineScope = CoroutineScope(Dispatchers.IO)

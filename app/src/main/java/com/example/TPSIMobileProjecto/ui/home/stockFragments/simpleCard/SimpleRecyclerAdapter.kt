@@ -1,17 +1,21 @@
-package com.example.TPSIMobileProjecto.ui.home.stockFragments.simpleCard.Adapter
-
+package com.example.TPSIMobileProjecto.ui.home.stockFragments.simpleCard
+import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.TPSIMobileProjecto.R
-import retrofit.TickerDetails
+import com.example.TPSIMobileProjecto.ui.home.stockFragments.checklist.ChecklistRecyclerAdapter
+import com.squareup.picasso.Picasso
+import retrofit.TickerSummary
 
 
-class SimpleRecyclerAdapter(private var stockList: List<TickerDetails>) : RecyclerView.Adapter<SimpleRecyclerAdapter.MyViewHolder>() {
-
+class SimpleRecyclerAdapter(private val context: Context, private var stockList: List<TickerSummary>) : RecyclerView.Adapter<SimpleRecyclerAdapter.MyViewHolder>() {
+    private var clickListener: DetailedViewOnClick? = null
     // This method creates a new ViewHolder object for each item in the RecyclerView
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         // Inflate the layout for each item and return a new ViewHolder object
@@ -29,11 +33,24 @@ class SimpleRecyclerAdapter(private var stockList: List<TickerDetails>) : Recycl
     // for each item in the RecyclerView
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val ItemsViewModel = stockList[position]
-        holder.imageView.setImageResource(R.drawable.ic_home_black_24dp)
-        holder.price.text = ItemsViewModel.details.current_price.toString()
+        holder.price.text = ItemsViewModel.current_price.toString()
         holder.symbol.text = ItemsViewModel.symbol
-        holder.sector.text = ItemsViewModel.sector
-        holder.percentage.text = ItemsViewModel.details.change_percent.toString()
+        holder.percentage.text = ItemsViewModel.change_percent.toString()
+
+        val color = if (ItemsViewModel.change_percent < 0) R.color.red else R.color.green
+        holder.percentage.setTextColor(ContextCompat.getColor(context, color))
+
+        // Load and display image using Picasso
+        ItemsViewModel.logo_url.let {
+            Picasso.get().load(it).into(holder.imageView)
+        }
+
+        holder.itemView.setOnClickListener {
+            Log.e("Tag", "Clicked item $ItemsViewModel")
+            clickListener?.onDetailedViewClick(ItemsViewModel)
+        }
+
+
     }
 
 
@@ -42,7 +59,13 @@ class SimpleRecyclerAdapter(private var stockList: List<TickerDetails>) : Recycl
         val imageView: ImageView = itemView.findViewById(R.id.imageview)
         val price: TextView = itemView.findViewById(R.id.tvPrice)
         val symbol: TextView = itemView.findViewById(R.id.tvSymbol)
-        val sector: TextView = itemView.findViewById(R.id.tvSector)
         val percentage : TextView = itemView.findViewById(R.id.tvPercentage)
+    }
+    fun setDetailedItemClickListener(listener: SimpleRecyclerAdapter.DetailedViewOnClick) {
+        clickListener = listener
+    }
+    interface DetailedViewOnClick {
+        fun onDetailedViewClick(tickerSummary: TickerSummary)
+
     }
 }

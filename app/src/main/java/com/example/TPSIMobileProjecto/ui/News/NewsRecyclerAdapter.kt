@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.TPSIMobileProjecto.R
 import com.squareup.picasso.Picasso
 import retrofit.News
-//import retrofit.TickerDetails
 
 
 class NewsRecyclerAdapter(private var stockList: List<News>) : RecyclerView.Adapter<NewsRecyclerAdapter.MyViewHolder>() {
@@ -38,16 +37,32 @@ class NewsRecyclerAdapter(private var stockList: List<News>) : RecyclerView.Adap
         holder.description.text = newsItem.description
         holder.title.text = newsItem.title
 
-        holder.description.maxLines = 3
 
         // Button to change the lines displayed
-        holder.readMoreButton.setOnClickListener {
-            if (holder.description.maxLines == 3) {
-                holder.description.maxLines = Int.MAX_VALUE
-                holder.readMoreButton.text = "Read Less"
-            } else {
-                holder.description.maxLines = 3
-                holder.readMoreButton.text = "Read More"
+        holder.description.post {
+            val layout = holder.description.layout
+            if (layout != null) {
+                val lines = layout.lineCount
+                if (lines > 0) {
+                    val ellipsisCount = layout.getEllipsisCount(lines - 1)
+                    if (ellipsisCount > 0) {
+                        holder.readMoreButton.visibility = View.VISIBLE
+                        holder.description.maxLines = 3
+
+                        // Button to change the lines displayed
+                        holder.readMoreButton.setOnClickListener {
+                            if (holder.description.maxLines == 3) {
+                                holder.description.maxLines = Int.MAX_VALUE
+                                holder.readMoreButton.text = "Read Less"
+                            } else {
+                                holder.description.maxLines = 3
+                                holder.readMoreButton.text = "Read More"
+                            }
+                        }
+                    } else {
+                        holder.readMoreButton.visibility = View.GONE
+                    }
+                }
             }
         }
         // Load and display image using Picasso

@@ -5,20 +5,16 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.TPSIMobileProjecto.databinding.FragmentHomeBinding
 import com.example.TPSIMobileProjecto.ui.home.stockFragments.simpleCard.SimpleCardFragment
 import com.example.TPSIMobileProjecto.R
-import com.example.TPSIMobileProjecto.ui.home.stockFragments.checklist.ChecklistFragment
 
-class HomeFragment : Fragment() {
-    val simpleFragment = SimpleCardFragment()
-    val checkListFragment = ChecklistFragment()
-    lateinit var button : Button
+class HomeFragment : Fragment(){
+    val simpleFragment = SimpleCardFragment(mutableListOf(), false)
     private var _binding: FragmentHomeBinding? = null
+
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -35,42 +31,40 @@ class HomeFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-
-
-
-        val button: Button = root.findViewById(R.id.btnCheckList)
-        button.text = "Edit Checklist"
-
-        childFragmentManager.beginTransaction()
-            .replace(R.id.display_fragment, simpleFragment, "TAG_SIMPLE_FRAGMENT")
-            .commit()
-
-
-        button.setOnClickListener {
-            val targetFragment = if (button.text == "Edit Checklist") {
-                button.text = "Exit Checklist"
-                checkListFragment
-            } else {
-                button.text = "Edit Checklist"
-                simpleFragment
-            }
-
             childFragmentManager.beginTransaction()
-                .replace(R.id.display_fragment, targetFragment)
+                .replace(R.id.display_fragment, simpleFragment)
                 .addToBackStack(null)
                 .commit()
-        }
-
-        childFragmentManager.addOnBackStackChangedListener {
-            // Update the button text based on the currently displayed fragment
-            val currentFragment = childFragmentManager.findFragmentById(R.id.display_fragment)
-            if (currentFragment is SimpleCardFragment) {
-                button.text = "Edit Checklist"
-            } else if (currentFragment is ChecklistFragment) {
-                button.text = "Exit Checklist"
-            }
-        }
+//
+//
+//
+//        val button: Button = root.findViewById(R.id.btnChecklist)
+//        button.text = "Edit Checklist"
+//
+//        childFragmentManager.beginTransaction()
+//            .replace(R.id.display_fragment, simpleFragment, "TAG_SIMPLE_FRAGMENT")
+//            .commit()
+//
+//
+//        button.setOnClickListener {
+//            val targetFragment = if (button.text == "Edit Checklist") {
+//                button.text = "Exit Checklist"
+//                checkListFragment
+//            } else {
+//                button.text = "Edit Checklist"
+//                simpleFragment
+//            }
+//
+//
+//        childFragmentManager.addOnBackStackChangedListener {
+//            // Update the button text based on the currently displayed fragment
+//            val currentFragment = childFragmentManager.findFragmentById(R.id.display_fragment)
+//            if (currentFragment is SimpleCardFragment) {
+//                button.text = "Edit Checklist"
+//            } else if (currentFragment is ChecklistFragment) {
+//                button.text = "Exit Checklist"
+//            }
+//        }
 
 
 
@@ -79,15 +73,15 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        Log.e("Lifecycle", "HomeFragment onResume()")
-        val button: Button = requireView().findViewById(R.id.btnCheckList)
-        // Update the button text based on the currently displayed fragment
-        val currentFragment = childFragmentManager.findFragmentById(R.id.display_fragment)
-        if (currentFragment is SimpleCardFragment) {
-            button.text = "Edit Checklist"
-        } else if (currentFragment is ChecklistFragment) {
-            button.text = "Exit Checklist"
-        }
+//        Log.e("Lifecycle", "HomeFragment onResume()")
+//        val button: Button = requireView().findViewById(R.id.btnChecklist)
+//        // Update the button text based on the currently displayed fragment
+//        val currentFragment = childFragmentManager.findFragmentById(R.id.display_fragment)
+//        if (currentFragment is SimpleCardFragment) {
+//            button.text = "Edit Checklist"
+//        } else if (currentFragment is ChecklistFragment) {
+//            button.text = "Exit Checklist"
+//        }
     }
     override fun onStart() {
         super.onStart()
@@ -110,4 +104,6 @@ class HomeFragment : Fragment() {
         _binding = null
         Log.e("Lifecycle", "HomeFragment OnDestroyView()")
     }
+
+
 }

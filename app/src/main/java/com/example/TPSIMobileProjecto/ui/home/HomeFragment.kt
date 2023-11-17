@@ -7,16 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.example.TPSIMobileProjecto.databinding.FragmentHomeBinding
 import com.example.TPSIMobileProjecto.ui.home.stockFragments.simpleCard.SimpleCardFragment
 import com.example.TPSIMobileProjecto.R
 import com.example.TPSIMobileProjecto.ui.home.stockFragments.checklist.ChecklistFragment
+import com.example.TPSIMobileProjecto.ui.home.stockFragments.detailedCard.DetailedCardFragment
+import com.example.TPSIMobileProjecto.ui.home.stockFragments.sharedViewModels.SimpleChecklistSharedViewModel
+import retrofit.TickerSummary
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(){
     val simpleFragment = SimpleCardFragment()
     val checkListFragment = ChecklistFragment()
     private var _binding: FragmentHomeBinding? = null
+
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -33,7 +38,6 @@ class HomeFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
 
 
 
@@ -108,4 +112,6 @@ class HomeFragment : Fragment() {
         _binding = null
         Log.e("Lifecycle", "HomeFragment OnDestroyView()")
     }
+
+
 }

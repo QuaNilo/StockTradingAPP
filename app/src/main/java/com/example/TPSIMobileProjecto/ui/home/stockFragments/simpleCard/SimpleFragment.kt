@@ -19,7 +19,6 @@ import com.google.gson.reflect.TypeToken
 import retrofit.TickerSummary
 
 class SimpleCardFragment(watchList : MutableList<TickerSummary>, isFromWatchList : Boolean) : Fragment(), SimpleRecyclerAdapter.DetailedViewOnClick {
-
     val watchList = watchList
     private lateinit var viewModel: SimpleCardViewModel
     val isFromWatchlist = isFromWatchList

@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.TPSIMobileProjecto.databinding.FragmentHomeBinding
 import com.example.TPSIMobileProjecto.ui.home.stockFragments.simpleCard.SimpleCardFragment
 import com.example.TPSIMobileProjecto.R
+import androidx.activity.OnBackPressedCallback
 
 class HomeFragment : Fragment(){
     val simpleFragment = SimpleCardFragment(mutableListOf(), false)
@@ -31,45 +32,40 @@ class HomeFragment : Fragment(){
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
-            childFragmentManager.beginTransaction()
-                .replace(R.id.display_fragment, simpleFragment)
-                .addToBackStack(null)
-                .commit()
-//
-//
-//
-//        val button: Button = root.findViewById(R.id.btnChecklist)
-//        button.text = "Edit Checklist"
-//
-//        childFragmentManager.beginTransaction()
-//            .replace(R.id.display_fragment, simpleFragment, "TAG_SIMPLE_FRAGMENT")
-//            .commit()
-//
-//
-//        button.setOnClickListener {
-//            val targetFragment = if (button.text == "Edit Checklist") {
-//                button.text = "Exit Checklist"
-//                checkListFragment
-//            } else {
-//                button.text = "Edit Checklist"
-//                simpleFragment
-//            }
-//
-//
-//        childFragmentManager.addOnBackStackChangedListener {
-//            // Update the button text based on the currently displayed fragment
-//            val currentFragment = childFragmentManager.findFragmentById(R.id.display_fragment)
-//            if (currentFragment is SimpleCardFragment) {
-//                button.text = "Edit Checklist"
-//            } else if (currentFragment is ChecklistFragment) {
-//                button.text = "Exit Checklist"
-//            }
-//        }
-
-
-
+        childFragmentManager.beginTransaction()
+            .replace(R.id.display_fragment, simpleFragment)
+            .addToBackStack(null)
+            .commit()
         return root
+        
+        
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+    
+        // Set up the callback
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // Handle the back button event
+                val currentFragment = childFragmentManager.findFragmentById(R.id.display_fragment)
+                Log.e("Fragment: ", currentFragment.toString())
+                if (currentFragment is SimpleCardFragment) {
+                    isEnabled = false
+                    return
+                }
+    
+                if (childFragmentManager.backStackEntryCount > 0 ) {
+                    childFragmentManager.popBackStack()
+                } else {
+                    isEnabled = false
+                    requireActivity().onBackPressedDispatcher.onBackPressed()
+                }
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+    }
+
 
     override fun onResume() {
         super.onResume()

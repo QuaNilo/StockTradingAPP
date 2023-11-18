@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-    
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="16dp"
+    app:cardCornerRadius="8dp"
     app:cardElevation="8dp"
-    app:cardCornerRadius="8dp">
+    app:checkedIconTint="#FD0000">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearLayout"
@@ -33,8 +32,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/title"
-            android:textSize="18sp"
             android:textColor="#000000"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -46,8 +45,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/date"
-            android:textSize="14sp"
             android:textColor="#757575"
+            android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
@@ -56,11 +55,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@string/description"
-            android:textSize="16sp"
-            android:textColor="#000000"
-            android:maxLines="3"
             android:ellipsize="end"
+            android:maxLines="3"
+            android:text="@string/description"
+            android:textColor="#000000"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvDate" />
@@ -71,9 +70,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/read_more"
-            app:layout_constraintTop_toBottomOf="@id/tvDesc"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/tvDesc" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

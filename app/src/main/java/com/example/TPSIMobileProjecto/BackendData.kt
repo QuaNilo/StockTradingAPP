@@ -17,14 +17,14 @@ import java.lang.Exception
 class BackendData {
     private val tickersAPI = RetrofitHelper.getInstance().create(retrofitInterface::class.java)
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
-    private var tickersListDeferred: Deferred<List<String>>? = null
+    var tickersListDeferred: Deferred<List<String>>? = null
 
     init {
         getSymbols()
     }
 
 
-    private fun getSymbols() {
+    fun getSymbols() {
         try {
             tickersListDeferred = coroutineScope.async {
                 val symbolsResponse = tickersAPI.getSymbols()
@@ -34,7 +34,6 @@ class BackendData {
                     emptyList()
                 }
             }
-
         }catch (e : Exception){
             throw e
         }

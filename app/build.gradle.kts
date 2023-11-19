@@ -69,5 +69,8 @@ dependencies {
     implementation ("com.google.android.material:material:1.10.0")
 
     implementation ("com.jjoe64:graphview:4.2.2")
-
+//testing
+    testImplementation ("junit:junit:4.13.2")
+    testImplementation ("org.jetbrains.kotlin:kotlin-test-junit:1.5.21")
+    testImplementation ("org.mockito:mockito-core:3.12.4")
 }

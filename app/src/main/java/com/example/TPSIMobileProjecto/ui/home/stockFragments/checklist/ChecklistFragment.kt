@@ -83,7 +83,7 @@ class ChecklistFragment(watchList : MutableList<TickerSummary>) : Fragment(), Ch
 
     fun filter(text: String) {
         if (text.isNotEmpty()) {
-            val filteredTickers = symbolsSummaryList.filter { it.symbol.first().uppercaseChar() == text.first().uppercaseChar() }
+            val filteredTickers = symbolsSummaryList.filter { it.symbol.startsWith(text, ignoreCase = true) }
             itemAdapter.filter(filteredTickers)
         } else {
             itemAdapter.filter(symbolsSummaryList)

@@ -41,5 +41,18 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
     }
 
+    override fun onBackPressed() {
+        val fragmentManager = supportFragmentManager
+
+        // Check if the desired fragment is in the back stack by tag
+        val desiredTag = "SimpleFragment"
+        val fragment = fragmentManager.findFragmentByTag(desiredTag)
+
+        if (fragment != null) {
+            fragmentManager.popBackStack(desiredTag, 0)
+        } else {
+            super.onBackPressed()
+        }
+    }
 
 }

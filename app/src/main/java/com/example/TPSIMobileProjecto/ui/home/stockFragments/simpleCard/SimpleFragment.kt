@@ -44,7 +44,7 @@ class SimpleCardFragment(watchList : MutableList<TickerSummary>, isFromWatchList
         button.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .replace(R.id.display_fragment, ChecklistFragment(watchList))
-                .addToBackStack(null)
+                .addToBackStack("SimpleFragment")
                 .commit()
         }
     }

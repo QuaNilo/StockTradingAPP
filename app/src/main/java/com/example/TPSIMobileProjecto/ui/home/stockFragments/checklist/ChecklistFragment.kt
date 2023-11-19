@@ -2,12 +2,17 @@ package com.example.TPSIMobileProjecto.ui.home.stockFragments.checklist
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ProgressBar
+import android.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.TPSIMobileProjecto.R
@@ -16,9 +21,12 @@ import retrofit.TickerSummary
 
 class ChecklistFragment(watchList : MutableList<TickerSummary>) : Fragment(), ChecklistRecyclerAdapter.ChecklistItemClickListener{
     val watchList = watchList
+    private lateinit var itemAdapter : ChecklistRecyclerAdapter
     private lateinit var viewModel: ChecklistViewModel
     val symbolsSummaryList = mutableListOf<TickerSummary>()
     lateinit var progressBar: ProgressBar // Import ProgressBar if not done already
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -28,8 +36,8 @@ class ChecklistFragment(watchList : MutableList<TickerSummary>) : Fragment(), Ch
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         val button: Button = view.findViewById(R.id.btnSimple)
+
         button.text = "HOME"
         button.setOnClickListener {
             parentFragmentManager.beginTransaction()
@@ -46,14 +54,37 @@ class ChecklistFragment(watchList : MutableList<TickerSummary>) : Fragment(), Ch
         viewModel.symbolSummaryList.observe(viewLifecycleOwner) { symbolSummaryList ->
             symbolsSummaryList.clear()
             symbolsSummaryList.addAll(symbolSummaryList)
-            val itemAdapter = ChecklistRecyclerAdapter(requireContext(), symbolsSummaryList, watchList) // Initialize the adapter
+
+            itemAdapter = ChecklistRecyclerAdapter(requireContext(), symbolsSummaryList, watchList) // Initialize the adapter
             val recyclerView: RecyclerView = view.findViewById(R.id.recycleView)
             itemAdapter.setChecklistItemClickListener(this) // Set the item click listener
             recyclerView.layoutManager = LinearLayoutManager(context)
             recyclerView.adapter = itemAdapter
             hideProgressBar()
+
+
+            view.findViewById<EditText>(R.id.etSearch).addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                    Log.e("tag", "Before text changed")
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    Log.e("tag", "After text changed")
+                }
+
+                override fun afterTextChanged(p0: Editable?) {
+                    filter(p0.toString())
+                }
+            })
+
         }
 
+
+    }
+
+    fun filter(text : String){
+        val filteredTickers = symbolsSummaryList.filter { it.symbol.contains(text, ignoreCase = true) }
+        itemAdapter.filter(filteredTickers)
     }
 
     override fun onStart() {

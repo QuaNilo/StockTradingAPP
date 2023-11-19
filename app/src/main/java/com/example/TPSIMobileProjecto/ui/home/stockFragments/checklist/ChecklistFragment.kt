@@ -91,6 +91,7 @@ class ChecklistFragment(watchList : MutableList<TickerSummary>) : Fragment(), Ch
     }
 
 
+
     override fun onStart() {
         super.onStart()
     }

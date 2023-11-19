@@ -37,8 +37,23 @@ class SimpleRecyclerAdapter(private val context: Context, private var stockList:
         holder.symbol.text = ItemsViewModel.symbol
         holder.percentage.text = ItemsViewModel.change_percent.toString()
 
-        val color = if (ItemsViewModel.change_percent < 0) R.color.red else R.color.green
+        val color = if (ItemsViewModel.change_percent < 0) {
+            R.color.red
+        } else {
+            R.color.green
+        }
+
         holder.percentage.setTextColor(ContextCompat.getColor(context, color))
+        holder.percgraph.setTextColor(ContextCompat.getColor(context, color))
+
+        // Rotate percgraph based on the sign of change_percent
+        val rotationAngle = if (ItemsViewModel.change_percent < 0) {
+            180f // Rotate 180 degrees for negative change
+        } else {
+            0f // No rotation for positive change
+        }
+        holder.percgraph.rotation = rotationAngle
+
 
         // Load and display image using Picasso
         ItemsViewModel.logo_url.let {
@@ -60,6 +75,7 @@ class SimpleRecyclerAdapter(private val context: Context, private var stockList:
         val price: TextView = itemView.findViewById(R.id.tvPrice)
         val symbol: TextView = itemView.findViewById(R.id.tvSymbol)
         val percentage : TextView = itemView.findViewById(R.id.tvPercentage)
+        val percgraph   : TextView = itemView.findViewById(R.id.tvPercentageGraph)
     }
     fun setDetailedItemClickListener(listener: SimpleRecyclerAdapter.DetailedViewOnClick) {
         clickListener = listener

@@ -12,7 +12,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
-import android.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.TPSIMobileProjecto.R
@@ -82,10 +81,15 @@ class ChecklistFragment(watchList : MutableList<TickerSummary>) : Fragment(), Ch
 
     }
 
-    fun filter(text : String){
-        val filteredTickers = symbolsSummaryList.filter { it.symbol.contains(text, ignoreCase = true) }
-        itemAdapter.filter(filteredTickers)
+    fun filter(text: String) {
+        if (text.isNotEmpty()) {
+            val filteredTickers = symbolsSummaryList.filter { it.symbol.first().uppercaseChar() == text.first().uppercaseChar() }
+            itemAdapter.filter(filteredTickers)
+        } else {
+            itemAdapter.filter(symbolsSummaryList)
+        }
     }
+
 
     override fun onStart() {
         super.onStart()

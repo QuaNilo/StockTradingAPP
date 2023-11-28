@@ -1,6 +1,5 @@
 package com.example.TPSIMobileProjecto.ui.home.stockFragments.checklist
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.TPSIMobileProjecto.BackendData
@@ -14,13 +13,20 @@ class ChecklistViewModel : ViewModel() {
     val data = BackendData()
 
     // Define a LiveData property to hold symbolSummaryList
-    private val _symbolSummaryList = MutableLiveData<List<TickerSummary>>()
-    val symbolSummaryList: LiveData<List<TickerSummary>> get() = _symbolSummaryList
+    private val _symbolSummaryList = MutableLiveData<List<TickerSummary>?>()
+    val symbolSummaryList: MutableLiveData<List<TickerSummary>?> get() = _symbolSummaryList
+    // Variable to store fetched data
+    private var fetchedData: List<TickerSummary>? = null
 
     init {
+        if (fetchedData == null) {
+            refreshData()
+        }
+    }
+    fun refreshData() {
         coroutineScope.launch {
-            val symbolSummaryList = data.fetchTickerSummary()
-            _symbolSummaryList.postValue(symbolSummaryList)
+            fetchedData = data.fetchTickerSummary()
+            _symbolSummaryList.postValue(fetchedData)
         }
     }
 }

@@ -1,17 +1,17 @@
 package com.example.TPSIMobileProjecto.ui.home.stockFragments.checklist
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.TPSIMobileProjecto.R
@@ -21,7 +21,7 @@ import retrofit.TickerSummary
 class ChecklistFragment(watchList : MutableList<TickerSummary>) : Fragment(), ChecklistRecyclerAdapter.ChecklistItemClickListener{
     val watchList = watchList
     private lateinit var itemAdapter : ChecklistRecyclerAdapter
-    private lateinit var viewModel: ChecklistViewModel
+    
     val symbolsSummaryList = mutableListOf<TickerSummary>()
     lateinit var progressBar: ProgressBar // Import ProgressBar if not done already
 
@@ -36,8 +36,9 @@ class ChecklistFragment(watchList : MutableList<TickerSummary>) : Fragment(), Ch
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val button: Button = view.findViewById(R.id.btnSimple)
+        val buttonRefresh: Button = view.findViewById(R.id.buttonRefresh)
 
-        button.text = "HOME"
+        button.text = getString(R.string.home)
         button.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .replace(R.id.display_fragment, SimpleCardFragment(watchList, true))
@@ -46,13 +47,16 @@ class ChecklistFragment(watchList : MutableList<TickerSummary>) : Fragment(), Ch
         }
 
 
-        viewModel = ViewModelProvider(this).get(ChecklistViewModel::class.java)
+        val viewModel: ChecklistViewModel by activityViewModels()
         progressBar = view.findViewById(R.id.progressBar)
 
         showProgressBar()
         viewModel.symbolSummaryList.observe(viewLifecycleOwner) { symbolSummaryList ->
+            Log.e("Fetch", symbolSummaryList.toString())
             symbolsSummaryList.clear()
-            symbolsSummaryList.addAll(symbolSummaryList)
+            if (symbolSummaryList != null) {
+                symbolsSummaryList.addAll(symbolSummaryList)
+            }
 
             itemAdapter = ChecklistRecyclerAdapter(requireContext(), symbolsSummaryList, watchList) // Initialize the adapter
             val recyclerView: RecyclerView = view.findViewById(R.id.recycleView)
@@ -77,6 +81,11 @@ class ChecklistFragment(watchList : MutableList<TickerSummary>) : Fragment(), Ch
             })
 
         }
+        buttonRefresh.setOnClickListener {
+            showProgressBar()
+            viewModel.refreshData()
+        }
+    
 
 
     }

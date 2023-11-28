@@ -40,7 +40,7 @@ class SimpleCardFragment(watchList : MutableList<TickerSummary>, isFromWatchList
         }
 
         val button : Button = view.findViewById(R.id.btnChecklist)
-        button.text = "Edit Watchlist"
+        button.text = getString(R.string.edit_watchlist)
         button.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .replace(R.id.display_fragment, ChecklistFragment(watchList))
@@ -72,7 +72,7 @@ class SimpleCardFragment(watchList : MutableList<TickerSummary>, isFromWatchList
         super.onDestroyView()
     }
     private fun saveData() {
-        val sharedPreferences = requireContext().getSharedPreferences("userWatchlist", Context.MODE_PRIVATE)
+        val sharedPreferences = requireContext().getSharedPreferences("editList", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
 
         val gson = Gson()
@@ -84,7 +84,7 @@ class SimpleCardFragment(watchList : MutableList<TickerSummary>, isFromWatchList
 
     // Retrieve the data using SharedPreferences and Gson
     private fun retrieveData() {
-        val sharedPreferences = requireContext().getSharedPreferences("userWatchlist", Context.MODE_PRIVATE)
+        val sharedPreferences = requireContext().getSharedPreferences("editList", Context.MODE_PRIVATE)
         val json = sharedPreferences.getString("tickerList", "")
 
         val gson = Gson()

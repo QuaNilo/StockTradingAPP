@@ -23,8 +23,7 @@ class SimpleCardFragment(watchList : MutableList<TickerSummary>, isFromWatchList
     val watchList = watchList
     private lateinit var viewModel: SimpleCardViewModel
     val isFromWatchlist = isFromWatchList
-    val emptyListStub: ViewStub = requireView().findViewById(R.id.null_handle_list)
-
+    private lateinit var emptyListStub : ViewStub
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,6 +36,7 @@ class SimpleCardFragment(watchList : MutableList<TickerSummary>, isFromWatchList
         super.onViewCreated(view, savedInstanceState)
         Log.e("Lifecycle", "SimpleFragment onViewCreated()")
         viewModel = ViewModelProvider(this).get(SimpleCardViewModel::class.java)
+        emptyListStub = requireView().findViewById(R.id.null_handle_list)
 
         if (watchList.isEmpty() && !isFromWatchlist){
             retrieveData()
@@ -75,7 +75,7 @@ class SimpleCardFragment(watchList : MutableList<TickerSummary>, isFromWatchList
         super.onDestroyView()
     }
     private fun saveData() {
-        val sharedPreferences = requireContext().getSharedPreferences("editList", Context.MODE_PRIVATE)
+        val sharedPreferences = requireContext().getSharedPreferences("blabla", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
 
         val gson = Gson()
@@ -87,7 +87,7 @@ class SimpleCardFragment(watchList : MutableList<TickerSummary>, isFromWatchList
 
     // Retrieve the data using SharedPreferences and Gson
     private fun retrieveData() {
-        val sharedPreferences = requireContext().getSharedPreferences("editList", Context.MODE_PRIVATE)
+        val sharedPreferences = requireContext().getSharedPreferences("blabla", Context.MODE_PRIVATE)
         val json = sharedPreferences.getString("tickerList", "")
 
         val gson = Gson()

@@ -69,15 +69,6 @@ class HomeFragment : Fragment(){
 
     override fun onResume() {
         super.onResume()
-//        Log.e("Lifecycle", "HomeFragment onResume()")
-//        val button: Button = requireView().findViewById(R.id.btnChecklist)
-//        // Update the button text based on the currently displayed fragment
-//        val currentFragment = childFragmentManager.findFragmentById(R.id.display_fragment)
-//        if (currentFragment is SimpleCardFragment) {
-//            button.text = "Edit Checklist"
-//        } else if (currentFragment is ChecklistFragment) {
-//            button.text = "Exit Checklist"
-//        }
     }
     override fun onStart() {
         super.onStart()

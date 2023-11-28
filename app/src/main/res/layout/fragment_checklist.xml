@@ -18,6 +18,7 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:hint="@string/search"
+        android:inputType="text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         />
@@ -27,7 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:layout_marginEnd="28dp"
+        android:layout_marginEnd="32dp"
         android:gravity="center"
         android:text="Button"
         app:layout_constraintEnd_toStartOf="@+id/etSearch"
@@ -46,7 +47,7 @@
         android:id="@+id/frameLayout2"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="53dp"
+        android:layout_marginTop="100dp"
         android:layout_marginBottom="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -60,6 +61,14 @@
             tools:listitem="@layout/layout_checklist_card" />
 
     </FrameLayout>
+
+    <Button
+        android:id="@+id/buttonRefresh"
+        android:layout_width="129dp"
+        android:layout_height="43dp"
+        android:text="@string/refresh"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnSimple" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

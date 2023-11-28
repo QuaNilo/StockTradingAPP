@@ -1,5 +1,6 @@
 package com.example.TPSIMobileProjecto.ui.home.stockFragments.checklist
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +15,8 @@ import com.squareup.picasso.Picasso
 import retrofit.TickerSummary
 
 
-class ChecklistRecyclerAdapter(private val context: Context, private var stockList: List<TickerSummary>, private var addedItems : List<TickerSummary>) : RecyclerView.Adapter<ChecklistRecyclerAdapter.MyViewHolder>() {
+class ChecklistRecyclerAdapter(private val context: Context, private var stockList: List<TickerSummary>, private var addedItems : List<TickerSummary>) :
+    RecyclerView.Adapter<ChecklistRecyclerAdapter.MyViewHolder>() {
     // This method creates a new ViewHolder object for each item in the RecyclerView
     private var filteredList: List<TickerSummary> = stockList
     private var clickListener: ChecklistItemClickListener? = null
@@ -34,6 +36,7 @@ class ChecklistRecyclerAdapter(private val context: Context, private var stockLi
 
     // This method binds the data to the ViewHolder object
     // for each item in the RecyclerView
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val ItemsViewModel = stockList[position]
         holder.price.text = ItemsViewModel.current_price.toString()
@@ -46,6 +49,7 @@ class ChecklistRecyclerAdapter(private val context: Context, private var stockLi
 
         val color = if (ItemsViewModel.change_percent < 0) R.color.red else R.color.green
         holder.percentage.setTextColor(ContextCompat.getColor(context, color))
+
 
         val isInWatchList = addedItems.any { it.symbol == ItemsViewModel.symbol }
         holder.addButton.text = "Remove"

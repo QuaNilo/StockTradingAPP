@@ -17,6 +17,8 @@ class NewsFragment : Fragment() {
 
     private var _binding: FragmentNewsBinding? = null
 
+    private  lateinit var newsViewModel: NewsViewModel
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -28,7 +30,7 @@ class NewsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         Log.e("Lifecycle", "NewsFragment onCreateView()")
-        val newsViewModel = ViewModelProvider(this).get(NewsViewModel::class.java)
+        newsViewModel = ViewModelProvider(this).get(NewsViewModel::class.java)
 
         _binding = FragmentNewsBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -78,6 +80,7 @@ class NewsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+
         Log.e("Lifecycle", "NewsFragment onDestroyView()")
     }
 

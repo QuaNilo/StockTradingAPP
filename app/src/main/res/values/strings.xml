@@ -8,4 +8,7 @@
     <string name="date">Date</string>
     <string name="read_more">Read More</string>
     <string name="search">Search</string>
+    <string name="refresh">Refresh</string>
+    <string name="home">HOME</string>
+    <string name="edit_watchlist">Edit Watchlist</string>
 </resources>

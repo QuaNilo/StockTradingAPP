@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewStub
 import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,6 +23,8 @@ class SimpleCardFragment(watchList : MutableList<TickerSummary>, isFromWatchList
     val watchList = watchList
     private lateinit var viewModel: SimpleCardViewModel
     val isFromWatchlist = isFromWatchList
+    val emptyListStub: ViewStub = requireView().findViewById(R.id.null_handle_list)
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -91,6 +94,9 @@ class SimpleCardFragment(watchList : MutableList<TickerSummary>, isFromWatchList
         val type = object : TypeToken<List<TickerSummary>>() {}.type
 
         val savedList = gson.fromJson<List<TickerSummary>>(json, type) ?: emptyList()
+        if (savedList == null || savedList.isEmpty()) {
+            val emptyListLayout: View = emptyListStub.inflate()
+        }
         watchList.clear()
         watchList.addAll(savedList)
     }

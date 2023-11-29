@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewStub
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
@@ -21,10 +22,10 @@ import retrofit.TickerSummary
 class ChecklistFragment(watchList : MutableList<TickerSummary>) : Fragment(), ChecklistRecyclerAdapter.ChecklistItemClickListener{
     val watchList = watchList
     private lateinit var itemAdapter : ChecklistRecyclerAdapter
-    
+    private lateinit var emptyListStub : ViewStub
     val symbolsSummaryList = mutableListOf<TickerSummary>()
     lateinit var progressBar: ProgressBar // Import ProgressBar if not done already
-
+    val viewModel: ChecklistViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,10 +35,11 @@ class ChecklistFragment(watchList : MutableList<TickerSummary>) : Fragment(), Ch
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.e("Lifecycle", "CheckListFragment onViewCreated()")
         super.onViewCreated(view, savedInstanceState)
         val button: Button = view.findViewById(R.id.btnSimple)
         val buttonRefresh: Button = view.findViewById(R.id.buttonRefresh)
-
+        emptyListStub = requireView().findViewById(R.id.checkList_null_handle_list)
         button.text = getString(R.string.home)
         button.setOnClickListener {
             parentFragmentManager.beginTransaction()
@@ -47,15 +49,25 @@ class ChecklistFragment(watchList : MutableList<TickerSummary>) : Fragment(), Ch
         }
 
 
-        val viewModel: ChecklistViewModel by activityViewModels()
+
         progressBar = view.findViewById(R.id.progressBar)
 
         showProgressBar()
+        //HANDLE API NULLS
+        viewModel.isDataLoadedSuccessfully.observe(viewLifecycleOwner){ isDataLoaded ->
+            if(isDataLoaded == false){
+                val emptyListLayout: View = emptyListStub.inflate()
+            }
+        }
+
         viewModel.symbolSummaryList.observe(viewLifecycleOwner) { symbolSummaryList ->
             Log.e("Fetch", symbolSummaryList.toString())
             symbolsSummaryList.clear()
             if (symbolSummaryList != null) {
                 symbolsSummaryList.addAll(symbolSummaryList)
+                viewModel.isDataLoadedSuccessfully.postValue(true)
+            }else{
+                viewModel.isDataLoadedSuccessfully.postValue(false)
             }
 
             itemAdapter = ChecklistRecyclerAdapter(requireContext(), symbolsSummaryList, watchList) // Initialize the adapter
@@ -83,7 +95,7 @@ class ChecklistFragment(watchList : MutableList<TickerSummary>) : Fragment(), Ch
         }
         buttonRefresh.setOnClickListener {
             showProgressBar()
-            viewModel.refreshData()
+            viewModel.refreshData(true)
         }
     
 
@@ -103,13 +115,19 @@ class ChecklistFragment(watchList : MutableList<TickerSummary>) : Fragment(), Ch
 
     override fun onStart() {
         super.onStart()
+        Log.e("Lifecycle", "CheckListFragment onStart()")
+        viewModel.refreshData(true)
     }
     override fun onStop() {
         super.onStop()
+        Log.e("Lifecycle", "CheckListFragment onStop()")
+
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        Log.e("Lifecycle", "CheckListFragment onDestroyView()")
+        viewModel.isDataLoadedSuccessfully.postValue(false)
     }
     override fun onAddButtonClick(tickerSummary: TickerSummary) {
         watchList.add(tickerSummary)

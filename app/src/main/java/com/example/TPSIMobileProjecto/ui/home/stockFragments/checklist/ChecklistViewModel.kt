@@ -17,14 +17,23 @@ class ChecklistViewModel : ViewModel() {
     val symbolSummaryList: MutableLiveData<List<TickerSummary>?> get() = _symbolSummaryList
     // Variable to store fetched data
     private var fetchedData: List<TickerSummary>? = null
-    private val _isDataLoadedSuccessfully = MutableLiveData<Boolean>()
-    val isDataLoadedSuccessfully: MutableLiveData<Boolean> get() = _isDataLoadedSuccessfully
+    private var _isDataLoadedSuccessfully = MutableLiveData<Boolean?>()
+    val isDataLoadedSuccessfully: MutableLiveData<Boolean?> get() = _isDataLoadedSuccessfully
 
 
     init {
         //Check if it's the first time loading APP or coming from news Fragment
         if (fetchedData == null) {
             refreshData()
+        }
+    }
+
+    fun setDataLoaded(isLoaded : Boolean){
+        _isDataLoadedSuccessfully.postValue(null)
+        if(isLoaded){
+        _isDataLoadedSuccessfully.postValue(true)
+        }else{
+        _isDataLoadedSuccessfully.postValue(false)
         }
     }
     fun refreshData(isRefreshed : Boolean = false) {

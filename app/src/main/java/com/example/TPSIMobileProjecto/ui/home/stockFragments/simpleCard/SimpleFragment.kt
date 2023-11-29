@@ -23,8 +23,7 @@ class SimpleCardFragment(watchList : MutableList<TickerSummary>, isFromWatchList
     val watchList = watchList
     private lateinit var viewModel: SimpleCardViewModel
     val isFromWatchlist = isFromWatchList
-    val emptyListStub: ViewStub = requireView().findViewById(R.id.null_handle_list)
-
+    private lateinit var emptyListStub : ViewStub
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,6 +36,7 @@ class SimpleCardFragment(watchList : MutableList<TickerSummary>, isFromWatchList
         super.onViewCreated(view, savedInstanceState)
         Log.e("Lifecycle", "SimpleFragment onViewCreated()")
         viewModel = ViewModelProvider(this).get(SimpleCardViewModel::class.java)
+        emptyListStub = requireView().findViewById(R.id.simpleFragment_null_handle_list)
 
         if (watchList.isEmpty() && !isFromWatchlist){
             retrieveData()

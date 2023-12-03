@@ -57,7 +57,7 @@ class NewsFragment : Fragment() {
             else{
                 emptyListTv.visibility = View.GONE
                 itemAdapter = NewsRecyclerAdapter(newsList)
-                val recyclerView: RecyclerView = view.findViewById(R.id.recycleView)
+                val recyclerView: RecyclerView = view.findViewById(R.id.newsrecyleview)
                 recyclerView.layoutManager = LinearLayoutManager(recyclerView.context)
                 recyclerView.adapter = NewsRecyclerAdapter(newsList)
             }

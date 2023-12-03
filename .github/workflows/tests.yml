@@ -25,12 +25,3 @@ jobs:
 
       - name:  Run Unit Tests
         run: ./gradlew test
-        
-  ktlint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: "checkout"
-        uses: actions/checkout@v2
-
-      - name: "ktlint"
-        uses: "block42-blockchain-company/ktlint-action@master"

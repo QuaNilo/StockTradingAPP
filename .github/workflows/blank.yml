@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Kotlin
+        uses: actions/setup-kotlin@v2
+        with:
+          kotlin-version: '1.9.0'
+
+      - name: Build and Run Tests
+        run: |
+          ./gradlew test

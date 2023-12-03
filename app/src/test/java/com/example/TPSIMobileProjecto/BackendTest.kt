@@ -21,11 +21,11 @@ class BackendDataTest {
     @Test
     fun testGetSymbols() = runBlocking {
         // Call the function under test
-        val tickersListDeferred =  tickersAPI.getSymbols()
+        val symbolsResponse =  backend.getTickersList()
 
-        // Assert that the result is a Deferred<List<String>>
-        assertTrue(tickersListDeferred.isSuccessful)
-        assertTrue(tickersListDeferred is  Response<List<String>>)
+
+        symbolsResponse.map { assertTrue( it != null) }
+        symbolsResponse.map { assertTrue( it is String) }
         return@runBlocking
     }
 
@@ -61,10 +61,6 @@ class BackendDataTest {
         response.map { assertTrue(it.body() is TickerSummary) }
         return@runBlocking
     }
-
-
-
-
 }
 
 

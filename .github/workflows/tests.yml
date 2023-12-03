@@ -32,7 +32,7 @@ jobs:
         with:
           webhook_url: ${{ secrets.DISCORD_SECRET }}
           title: NEW PUSH TO STOCK APP
-          message: "${{ github.event.pull_request.title }} \nCreator :  ${{ github.event.pull_request.user.login }} \n Obrigado Ricardo por esta oportunidade"
+          message: "${{ github.event.pull_request.title }}  \n Repository : ${{ github.repository }} \n  Creator : ${{ github.actor }} \n Obrigado Ricardo por esta oportunidade"
           include_image: true
           username: 'Yo mama'
           avatar_url: 'https://i.pinimg.com/originals/a8/91/8a/a8918a2421977089bc5c167158cff466.png'

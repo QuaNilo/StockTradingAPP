@@ -19,6 +19,21 @@ jobs:
         with:
           kotlin-version: '1.9.0'
 
+      
+      - name: Run Linter
+        run: ./gradlew ktlintCheck
+
+      
+      - name: Build and Generate Documentation
+        run: |
+          ./gradlew build
+          ./gradlew dokka
+      
+      
+      - name: Check Dependencies for Vulnerabilities
+        run: ./gradlew dependencyCheckAnalyze
+
+
       - name: Build and Run Tests
         run: |
           ./gradlew test

@@ -27,12 +27,13 @@ jobs:
         run: ./gradlew test
 
       
-      - name: send custom message with args
-        uses: appleboy/discord-action@master
+      - name: Send Discord notification
+        uses: stegzilla/discord-notify@v2
         with:
-          webhook_id: ${{ secrets.WEBHOOK_ID }}
-          webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
+          webhook_url: ${{ secrets.DISCORD_SECRET }}
+          title: NEW PUSH TO STOCK APP
+          message: "**${{ github.event.pull_request.title }}**\n**Creator:** ${{ github.event.pull_request.user.login }}\n${{ github.event.pull_request.html_url }}"
+          include_image: true
           username: 'Yo mama'
-          message: 'The ${{ github.event_name }} event triggered first step.'
           avatar_url: 'https://i.pinimg.com/originals/a8/91/8a/a8918a2421977089bc5c167158cff466.png'
           

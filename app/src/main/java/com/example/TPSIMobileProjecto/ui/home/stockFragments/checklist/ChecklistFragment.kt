@@ -115,8 +115,6 @@ class ChecklistFragment(watchList : MutableList<TickerSummary>) : Fragment(), Ch
         super.onStart()
         Log.e("Lifecycle", "CheckListFragment onStart()")
         viewModel.refreshData(true)
-//        emptyListTv.visibility = if (symbolsSummaryList.isEmpty() || symbolsSummaryList == null) View.VISIBLE else View.GONE
-
     }
     override fun onStop() {
         super.onStop()

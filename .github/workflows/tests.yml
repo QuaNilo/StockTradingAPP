@@ -27,10 +27,12 @@ jobs:
         run: ./gradlew test
 
       
-      - name: Discord notification
-        uses: cl8dep/action-discord@v0
+      - name: send custom message with args
+        uses: appleboy/discord-action@master
         with:
-          webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          message: '104 Kilos de formusura'
-          username: 'A tua mãe'
-          avatar: 'https://i.pinimg.com/originals/a8/91/8a/a8918a2421977089bc5c167158cff466.png'
+          webhook_id: ${{ secrets.WEBHOOK_ID }}
+          webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
+          username: 'Yo mama'
+          message: 'The ${{ github.event_name }} event triggered first step.'
+          avatar_url: 'https://i.pinimg.com/originals/a8/91/8a/a8918a2421977089bc5c167158cff466.png'
+          

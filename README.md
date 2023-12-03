@@ -1,6 +1,6 @@
 # Stock Tracking APP  
 
-Project made for a University Project.
+Project made for a University Project where we were assigned an API and had to use fragments, RecyclerViews, Lifecycle Manipulations, JetPack Modules (e.g Retrofit), ViewModels and Github Actions Pipelines.
 
 
 ## Created By : 

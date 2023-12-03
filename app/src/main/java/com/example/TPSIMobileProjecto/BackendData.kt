@@ -4,7 +4,6 @@ import retrofit.TickerDetails
 import retrofit.TickerSummary
 import retrofit2.Response
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 import retrofit.RetrofitHelper
 import retrofit.retrofitInterface
 import kotlinx.coroutines.Dispatchers
@@ -103,11 +102,11 @@ class BackendData {
             val symbolSummaryList = mutableListOf<TickerSummary>()
             val tickersList = getTickersList()
 
-            if (tickersList.isNullOrEmpty()) {
+            if (tickersList.isEmpty()) {
                 Log.e("MyTag: ", "Failed to fetch details for ticker: $tickersList")
                 return emptyList()
             }
-            for (ticker in tickersList!!) {
+            for (ticker in tickersList) {
                 val responseSymbolSummary: Response<TickerSummary> =
                     tickersAPI.getSymbolSummary(ticker)
                 if (responseSymbolSummary.isSuccessful) {
@@ -116,7 +115,6 @@ class BackendData {
                         symbolSummaryList.add(tickerSummary)
                     }
                 } else {
-                    // Handle the error, log it, or throw a custom exception
                     Log.e("MyTag: ", "Failed to fetch summary for ticker: $ticker")
                 }
             }

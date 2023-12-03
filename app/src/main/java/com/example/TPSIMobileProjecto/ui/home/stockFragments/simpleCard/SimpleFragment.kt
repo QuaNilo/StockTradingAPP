@@ -1,7 +1,6 @@
 package com.example.TPSIMobileProjecto.ui.home.stockFragments.simpleCard
 
 import android.content.Context
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -21,7 +20,6 @@ import retrofit.TickerSummary
 
 class SimpleCardFragment(watchList : MutableList<TickerSummary>, isFromWatchList : Boolean) : Fragment(), SimpleRecyclerAdapter.DetailedViewOnClick {
     val watchList = watchList
-    private lateinit var viewModel: SimpleCardViewModel
     val isFromWatchlist = isFromWatchList
     private lateinit var emptyListStub : ViewStub
 
@@ -35,7 +33,6 @@ class SimpleCardFragment(watchList : MutableList<TickerSummary>, isFromWatchList
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.e("Lifecycle", "SimpleFragment onViewCreated()")
-        viewModel = ViewModelProvider(this).get(SimpleCardViewModel::class.java)
         emptyListStub = requireView().findViewById(R.id.simpleFragment_null_handle_list)
 
         if (watchList.isEmpty() && !isFromWatchlist){

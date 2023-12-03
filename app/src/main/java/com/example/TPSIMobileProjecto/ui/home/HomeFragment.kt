@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.example.TPSIMobileProjecto.databinding.FragmentHomeBinding
 import com.example.TPSIMobileProjecto.ui.home.stockFragments.simpleCard.SimpleCardFragment
 import com.example.TPSIMobileProjecto.R
@@ -28,7 +27,6 @@ class HomeFragment : Fragment(){
     ): View {
 
         Log.e("Lifecycle", "HomeFragment onCreateView()")
-        val homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -37,8 +35,7 @@ class HomeFragment : Fragment(){
             .addToBackStack(null)
             .commit()
         return root
-        
-        
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -70,6 +67,7 @@ class HomeFragment : Fragment(){
     override fun onResume() {
         super.onResume()
     }
+
     override fun onStart() {
         super.onStart()
         Log.e("Lifecycle", "HomeFragment onStart()")

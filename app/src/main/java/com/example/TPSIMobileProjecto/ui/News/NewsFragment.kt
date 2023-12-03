@@ -5,6 +5,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -12,12 +14,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.TPSIMobileProjecto.R
 import com.example.TPSIMobileProjecto.databinding.FragmentNewsBinding
+import com.example.TPSIMobileProjecto.ui.home.stockFragments.checklist.ChecklistRecyclerAdapter
 
 class NewsFragment : Fragment() {
-
+    private lateinit var itemAdapter : NewsRecyclerAdapter
     private var _binding: FragmentNewsBinding? = null
-
+    private lateinit var emptyListTv : TextView
     private  lateinit var newsViewModel: NewsViewModel
+    lateinit var progressBar: ProgressBar // Import ProgressBar if not done already
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -30,24 +34,35 @@ class NewsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         Log.e("Lifecycle", "NewsFragment onCreateView()")
-        newsViewModel = ViewModelProvider(this).get(NewsViewModel::class.java)
 
         _binding = FragmentNewsBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-
-        newsViewModel.newsList.observe(viewLifecycleOwner) { newsList ->
-            view?.findViewById<RecyclerView>(R.id.newsrecyleview)?.let { recyclerView ->
-                recyclerView.layoutManager = LinearLayoutManager(recyclerView.context)
-                recyclerView.adapter = NewsRecyclerAdapter(newsList)
-            }
-        }
         return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        newsViewModel = ViewModelProvider(this).get(NewsViewModel::class.java)
 
+        progressBar = view.findViewById(R.id.progressBarNews)
+        showProgressBar()
+
+        emptyListTv = view.findViewById<TextView>(R.id.tvNewsFound)
+        emptyListTv.visibility = View.GONE
+
+        newsViewModel.newsList.observe(viewLifecycleOwner) { newsList ->
+            if (newsList.isEmpty() || newsList == null) {
+                emptyListTv.visibility = View.VISIBLE
+            }
+            else{
+                emptyListTv.visibility = View.GONE
+                itemAdapter = NewsRecyclerAdapter(newsList)
+                val recyclerView: RecyclerView = view.findViewById(R.id.newsrecyleview)
+                recyclerView.layoutManager = LinearLayoutManager(recyclerView.context)
+                recyclerView.adapter = NewsRecyclerAdapter(newsList)
+            }
+            hideProgressBar()
+        }
         // Set up the callback
         val callback = object : OnBackPressedCallback(true ) {
             override fun handleOnBackPressed() {
@@ -62,6 +77,7 @@ class NewsFragment : Fragment() {
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
+
     override fun onStart() {
         super.onStart()
         Log.e("Lifecycle", "NewsFragment onStart()")
@@ -84,6 +100,12 @@ class NewsFragment : Fragment() {
         Log.e("Lifecycle", "NewsFragment onDestroyView()")
     }
 
+    fun showProgressBar() {
+        progressBar.visibility = View.VISIBLE
+    }
 
+    fun hideProgressBar() {
+        progressBar.visibility = View.GONE
+    }
 
 }

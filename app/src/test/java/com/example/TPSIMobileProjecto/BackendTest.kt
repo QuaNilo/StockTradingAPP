@@ -11,6 +11,7 @@ import retrofit.TickerDetails
 import retrofit.TickerSummary
 import retrofit.retrofitInterface
 import retrofit2.Response
+import kotlin.test.DefaultAsserter.fail
 
 
 class BackendDataTest {
@@ -21,11 +22,14 @@ class BackendDataTest {
     @Test
     fun testGetSymbols() = runBlocking {
         // Call the function under test
-        val tickersListDeferred =  tickersAPI.getSymbols()
+        val symbolsResponse =  backend.getTickersList()
 
-        // Assert that the result is a Deferred<List<String>>
-        assertTrue(tickersListDeferred.isSuccessful)
-        assertTrue(tickersListDeferred is  Response<List<String>>)
+        assertTrue(symbolsResponse.isNotEmpty())
+        assertTrue(symbolsResponse.contains("AAPL"))
+        assertTrue(symbolsResponse.contains("GOOGL"))
+        assertTrue(symbolsResponse.contains("MSFT"))
+        symbolsResponse.map { assertTrue( it != null) }
+        symbolsResponse.map { assertTrue( it is String) }
         return@runBlocking
     }
 
@@ -42,29 +46,37 @@ class BackendDataTest {
 
     @Test
     fun testGetTickerDetails() = runBlocking {
-        // Call the function under test
-        val tickersList = backend.getTickersList()
-        val response = tickersList.map { tickersAPI.getSymbolDetails(it) }
+            // Call the function under test
+            val tickersList = backend.getTickersList()
 
-        response.map { assertTrue(it.isSuccessful) }
-        response.map { assertTrue(it.body() is TickerDetails) }
-        return@runBlocking
+            assertTrue(tickersList.isNotEmpty())
+            assertTrue(tickersList.contains("AAPL"))
+            assertTrue(tickersList.contains("GOOGL"))
+            assertTrue(tickersList.contains("MSFT"))
+
+            val response = tickersList.map { tickersAPI.getSymbolDetails(it) }
+
+            response.map { assertTrue(it.isSuccessful) }
+            response.map { assertTrue(it.body() is TickerDetails) }
+            return@runBlocking
     }
 
     @Test
     fun testGetTickerSummary() = runBlocking {
         // Call the function under test
         val tickersList = backend.getTickersList()
+
+        assertTrue(tickersList.isNotEmpty())
+        assertTrue(tickersList.contains("AAPL"))
+        assertTrue(tickersList.contains("GOOGL"))
+        assertTrue(tickersList.contains("MSFT"))
+
         val response = tickersList.map { tickersAPI.getSymbolSummary(it) }
 
         response.map { assertTrue(it.isSuccessful) }
         response.map { assertTrue(it.body() is TickerSummary) }
         return@runBlocking
     }
-
-
-
-
 }
 
 

@@ -25,3 +25,14 @@ jobs:
 
       - name:  Run Unit Tests
         run: ./gradlew test
+
+
+      - name: 'Sending SMS Notification'
+        uses: twilio-labs/actions-sms@v1
+        with:
+          fromPhoneNumber: ${{secrets.TWILIO_FROM_NUMBER}}
+          toPhoneNumber: ${{secrets.XICO_NUMBER}}
+          message: 'Olá Francisco'
+        env:
+          TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
+          TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}

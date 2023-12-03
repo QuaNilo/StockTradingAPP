@@ -4,7 +4,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface retrofitInterface {
-    @GET("/api/symbols")
+    @GET("/api/symbolss")
     suspend fun getSymbols(): Response<List<String>>
 
     @GET("/api/symbol/summary/{symbol}")
@@ -13,6 +13,6 @@ interface retrofitInterface {
     @GET("/api/symbol/details/{symbol}")
     suspend fun getSymbolDetails(@Path("symbol") symbol: String) : Response<TickerDetails>
 
-    @GET("/api/news")
+    @GET("/api/newss")
     suspend fun getNews() : Response<List<News>>
 }

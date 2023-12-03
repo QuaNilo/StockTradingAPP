@@ -9,13 +9,13 @@ Project made for a University Project where we were assigned an API and had to u
 [Exill18](https://github.com/Exill18)  
 
 ## WatchList fragment
-![WatchList fragment](https://github.com/QuaNilo/TPSIMobileProjecto/blob/velez/Screenshot%202023-12-03%20192930.png)
+![WatchList fragment](./Resources/Screenshot%202023-12-03%20192930.png)
 
 ## Detailed view of a stock  
-![Detailed view of a stock](https://github.com/QuaNilo/TPSIMobileProjecto/blob/velez/Screenshot%202023-12-03%20192911.png)
+![Detailed view of a stock](./Resources/Screenshot%202023-12-03%20192911.png)
 
 ## Fragment to add or remove stocks from a Watchlist  
-![Fragment to add or remove stocks from a Watchlist](https://github.com/QuaNilo/TPSIMobileProjecto/blob/velez/Screenshot%202023-12-03%20192924.png)
+![Fragment to add or remove stocks from a Watchlist](./Resources/Screenshot%202023-12-03%20192924.png)
 
 ## News Fragment  
-![News Fragment](https://github.com/QuaNilo/TPSIMobileProjecto/blob/velez/Screenshot%202023-12-03%20192937.png)
+![News Fragment](./Resources/Screenshot%202023-12-03%20192937.png)

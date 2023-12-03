@@ -24,6 +24,7 @@ class BackendData {
     }
 
 
+    //Function to get all symbols
     fun getSymbols() {
         try {
             tickersListDeferred = coroutineScope.async {
@@ -39,6 +40,8 @@ class BackendData {
         }
     }
 
+
+    //Function to call async and await all symbols to pass onto other functions
     suspend fun getTickersList(): List<String> {
         return tickersListDeferred?.await() ?: emptyList()
     }

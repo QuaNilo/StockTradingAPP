@@ -13,7 +13,7 @@
         android:layout_marginTop="356dp"
         android:layout_marginEnd="162dp"
         android:layout_marginBottom="356dp"
-        android:text="No Data Found"
+        android:text="@string/no_data_found"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

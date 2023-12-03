@@ -15,7 +15,6 @@ import retrofit.TickerSummary
 
 class SimpleRecyclerAdapter(private val context: Context, private var stockList: List<TickerSummary>) : RecyclerView.Adapter<SimpleRecyclerAdapter.MyViewHolder>() {
     private var clickListener: DetailedViewOnClick? = null
-    // This method creates a new ViewHolder object for each item in the RecyclerView
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         // Inflate the layout for each item and return a new ViewHolder object
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.layout_simple_card, parent, false)
@@ -81,6 +80,5 @@ class SimpleRecyclerAdapter(private val context: Context, private var stockList:
     }
     interface DetailedViewOnClick {
         fun onDetailedViewClick(tickerSummary: TickerSummary)
-
     }
 }

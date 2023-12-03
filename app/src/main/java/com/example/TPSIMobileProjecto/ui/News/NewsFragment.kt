@@ -77,6 +77,7 @@ class NewsFragment : Fragment() {
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
+
     override fun onStart() {
         super.onStart()
         Log.e("Lifecycle", "NewsFragment onStart()")

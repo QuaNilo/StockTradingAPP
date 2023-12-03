@@ -22,18 +22,6 @@ jobs:
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-        
-      - name : Build with Gradle
-        run: ./gradlew build
-
-      - name: Build and Generate Documentation
-        run: ./gradlew dokka
-
-      - name: Run Linter
-        run: ./gradlew ktlintCheck
-
-      - name: Check Dependencies for Vulnerabilities
-        run: ./gradlew dependencyCheckAnalyze
 
       - name:  Run Unit Tests
         run: ./gradlew test

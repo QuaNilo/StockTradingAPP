@@ -11,4 +11,10 @@
     <string name="refresh">Refresh</string>
     <string name="home">HOME</string>
     <string name="edit_watchlist">Edit Watchlist</string>
+    <string name="no_data_found">No Data Found</string>
+    <string name="no_news_found">No News found</string>
+    <string name="symbol">Symbol</string>
+    <string name="percentage_symbol">%</string>
+    <string name="price">Price</string>
+    <string name="add">Add</string>
 </resources>

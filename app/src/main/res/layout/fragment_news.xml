@@ -45,7 +45,7 @@
         android:layout_marginTop="264dp"
         android:layout_marginBottom="448dp"
         android:gravity="center"
-        android:text="No News found"
+        android:text="@string/no_news_found"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

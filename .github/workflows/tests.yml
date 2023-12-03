@@ -26,7 +26,6 @@ jobs:
       - name:  Run Unit Tests
         run: ./gradlew test
 
-      
       - name: Send Discord notification
         uses: stegzilla/discord-notify@v2
         with:
@@ -36,4 +35,3 @@ jobs:
           include_image: true
           username: 'Yo mama'
           avatar_url: 'https://i.pinimg.com/originals/a8/91/8a/a8918a2421977089bc5c167158cff466.png'
-          

@@ -10,8 +10,6 @@ import retrofit.RetrofitHelper
 import retrofit.TickerDetails
 import retrofit.TickerSummary
 import retrofit.retrofitInterface
-import retrofit2.Response
-import kotlin.test.DefaultAsserter.fail
 
 
 class BackendDataTest {

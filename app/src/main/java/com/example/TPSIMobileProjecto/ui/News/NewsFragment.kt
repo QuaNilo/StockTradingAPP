@@ -16,7 +16,7 @@ import com.example.TPSIMobileProjecto.R
 import com.example.TPSIMobileProjecto.databinding.FragmentNewsBinding
 
 class NewsFragment : Fragment() {
-    private lateinit var itemAdapter : NewsRecyclerAdapter
+    lateinit var itemAdapter : NewsRecyclerAdapter
     private var _binding: FragmentNewsBinding? = null
     private lateinit var emptyListTv : TextView
     private  lateinit var newsViewModel: NewsViewModel

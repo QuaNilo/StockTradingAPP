@@ -18,12 +18,14 @@ import com.jjoe64.graphview.GraphView
 import com.jjoe64.graphview.series.DataPoint
 import com.jjoe64.graphview.series.LineGraphSeries
 import com.squareup.picasso.Picasso
+import org.w3c.dom.Text
 import retrofit.TickerDetails
 import retrofit.TickerSummary
 
-class DetailedCardFragment(tickerSummary: TickerSummary) : Fragment() {
+class DetailedCardFragment(chosenTicker : TickerSummary) : Fragment() {
     lateinit var progressBar: ProgressBar
-    private val data = tickerSummary
+    lateinit var noDataFoundtv: TextView
+    private val chosenTicker = chosenTicker
     private var tickerDetailedList: MutableList<TickerDetails> = mutableListOf()
     lateinit var lineGraphView: GraphView
     override fun onCreateView(
@@ -38,13 +40,15 @@ class DetailedCardFragment(tickerSummary: TickerSummary) : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val viewModel = ViewModelProvider(this).get(DetailedCardViewModel::class.java)
 
+        noDataFoundtv = view.findViewById(R.id.tvDetailedNotFound)
+        noDataFoundtv.visibility = View.GONE
 
         progressBar = view.findViewById(R.id.progressBarDetailed)
         showProgressBar()
         viewModel.symbolDetailsList.observe(viewLifecycleOwner){ symbolDetails ->
             tickerDetailedList.clear()
             tickerDetailedList.addAll(symbolDetails)
-            val ticker = tickerDetailedList.find { it.symbol == data.symbol }
+            val ticker = tickerDetailedList.find { it.symbol == chosenTicker.symbol }
             Log.e("tag", "Ticker detailed = ${ticker.toString()}")
 
             val price: TextView = view.findViewById(R.id.tvPriceDetailed)
@@ -66,8 +70,12 @@ class DetailedCardFragment(tickerSummary: TickerSummary) : Fragment() {
                 }
                 val color = if (ticker.details.change_percent < 0) R.color.red else R.color.green
                 percentage.setTextColor(ContextCompat.getColor(requireContext(), color))
-                hideProgressBar()
+
             }
+            else{
+                noDataFoundtv.visibility = View.VISIBLE
+            }
+            hideProgressBar()
         }
 
         val button: Button = view.findViewById(R.id.btnHome)

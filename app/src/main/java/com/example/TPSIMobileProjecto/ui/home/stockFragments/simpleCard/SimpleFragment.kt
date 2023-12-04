@@ -21,6 +21,7 @@ import retrofit.TickerSummary
 class SimpleCardFragment(watchList : MutableList<TickerSummary>, isFromWatchList : Boolean) : Fragment(), SimpleRecyclerAdapter.DetailedViewOnClick {
     val watchList = watchList
     val isFromWatchlist = isFromWatchList
+    //Init ViewStub to populate on a condition
     private lateinit var emptyListStub : ViewStub
 
     override fun onCreateView(

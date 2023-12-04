@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewStub
 import android.widget.Button
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.TPSIMobileProjecto.R
@@ -21,6 +22,7 @@ import retrofit.TickerSummary
 class SimpleCardFragment(watchList : MutableList<TickerSummary>, isFromWatchList : Boolean) : Fragment(), SimpleRecyclerAdapter.DetailedViewOnClick {
     val watchList = watchList
     val isFromWatchlist = isFromWatchList
+    private lateinit var noDataTV : TextView
     //Init ViewStub to populate on a condition
     private lateinit var emptyListStub : ViewStub
 
@@ -34,7 +36,8 @@ class SimpleCardFragment(watchList : MutableList<TickerSummary>, isFromWatchList
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.e("Lifecycle", "SimpleFragment onViewCreated()")
-        emptyListStub = requireView().findViewById(R.id.simpleFragment_null_handle_list)
+        noDataTV = requireView().findViewById(R.id.tvSimpleNoData)
+        noDataTV.visibility = View.GONE
 
         if (watchList.isEmpty() && !isFromWatchlist){
             retrieveData()
@@ -63,6 +66,9 @@ class SimpleCardFragment(watchList : MutableList<TickerSummary>, isFromWatchList
 
     override fun onStart() {
         super.onStart()
+        if (watchList == null || watchList.isEmpty()) {
+            noDataTV.visibility = View.VISIBLE
+        }
         val itemAdapter = SimpleRecyclerAdapter(requireContext(), watchList)
         val recyclerView: RecyclerView = requireView().findViewById(R.id.recycleView)
         itemAdapter.setDetailedItemClickListener(this)
@@ -93,7 +99,7 @@ class SimpleCardFragment(watchList : MutableList<TickerSummary>, isFromWatchList
 
         val savedList = gson.fromJson<List<TickerSummary>>(json, type) ?: emptyList()
         if (savedList == null || savedList.isEmpty()) {
-            val emptyListLayout: View = emptyListStub.inflate()
+            noDataTV.visibility = View.VISIBLE
         }
         watchList.clear()
         watchList.addAll(savedList)

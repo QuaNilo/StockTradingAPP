@@ -22,7 +22,7 @@ import retrofit.TickerSummary
 class ChecklistFragment(watchList : MutableList<TickerSummary>) : Fragment(), ChecklistRecyclerAdapter.ChecklistItemClickListener{
     val watchList = watchList
     private lateinit var itemAdapter : ChecklistRecyclerAdapter
-    private lateinit var emptyListTv : TextView
+    private lateinit var noDataTV : TextView
     val symbolsSummaryList = mutableListOf<TickerSummary>()
     lateinit var progressBar: ProgressBar // Import ProgressBar if not done already
     val viewModel: ChecklistViewModel by activityViewModels()
@@ -38,8 +38,8 @@ class ChecklistFragment(watchList : MutableList<TickerSummary>) : Fragment(), Ch
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.e("Lifecycle", "CheckListFragment onViewCreated()")
         super.onViewCreated(view, savedInstanceState)
-        emptyListTv = requireView().findViewById(R.id.tvCheckListNoData)
-        emptyListTv.visibility = View.GONE
+        noDataTV = requireView().findViewById(R.id.tvCheckListNoData)
+        noDataTV.visibility = View.GONE
 
         val button: Button = view.findViewById(R.id.btnSimple)
         val buttonRefresh: Button = view.findViewById(R.id.buttonRefresh)
@@ -56,11 +56,11 @@ class ChecklistFragment(watchList : MutableList<TickerSummary>) : Fragment(), Ch
         progressBar = view.findViewById(R.id.progressBar)
         showProgressBar()
 
-        viewModel.symbolSummaryList.observe(viewLifecycleOwner) { symbolSummaryList ->
-            Log.e("Fetch", symbolSummaryList.toString())
+        viewModel.symbolSummaryList.observe(viewLifecycleOwner) { summaryListFromVM ->
+            Log.e("Fetch", summaryListFromVM.toString())
             symbolsSummaryList.clear()
-            if (symbolSummaryList != null ) {
-                symbolsSummaryList.addAll(symbolSummaryList)
+            if (summaryListFromVM != null ) {
+                symbolsSummaryList.addAll(summaryListFromVM)
             }
 
 
@@ -70,7 +70,7 @@ class ChecklistFragment(watchList : MutableList<TickerSummary>) : Fragment(), Ch
             recyclerView.layoutManager = LinearLayoutManager(context)
             recyclerView.adapter = itemAdapter
             hideProgressBar()
-            emptyListTv.visibility = if (symbolsSummaryList.isEmpty() || symbolsSummaryList == null) View.VISIBLE else View.GONE
+            noDataTV.visibility = if (symbolsSummaryList.isEmpty() || symbolsSummaryList == null) View.VISIBLE else View.GONE
 
 
             view.findViewById<EditText>(R.id.etSearch).addTextChangedListener(object : TextWatcher {

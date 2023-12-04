@@ -15,21 +15,16 @@ import retrofit.News
 
 class NewsRecyclerAdapter(private var stockList: List<News>) : RecyclerView.Adapter<NewsRecyclerAdapter.MyViewHolder>() {
 
-    // This method creates a new ViewHolder object for each item in the RecyclerView
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         // Inflate the layout for each item and return a new ViewHolder object
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.layout_news_card, parent, false)
         return MyViewHolder(itemView)
     }
 
-    // This method returns the total
-    // number of items in the data set
     override fun getItemCount(): Int {
         return stockList.size
     }
 
-    // This method binds the data to the ViewHolder object
-    // for each item in the RecyclerView
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val newsItem = stockList[position]
@@ -37,8 +32,6 @@ class NewsRecyclerAdapter(private var stockList: List<News>) : RecyclerView.Adap
         holder.description.text = newsItem.description
         holder.title.text = newsItem.title
 
-
-        // Button to change the lines displayed
         holder.description.post {
             val layout = holder.description.layout
             if (layout != null) {
@@ -65,6 +58,7 @@ class NewsRecyclerAdapter(private var stockList: List<News>) : RecyclerView.Adap
                 }
             }
         }
+
         // Load and display image using Picasso
         newsItem.image_url.let {
             Picasso.get().load(it).into(holder.imageView)

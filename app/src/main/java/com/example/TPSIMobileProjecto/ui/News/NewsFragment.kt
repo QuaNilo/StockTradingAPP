@@ -18,7 +18,7 @@ import com.example.TPSIMobileProjecto.databinding.FragmentNewsBinding
 class NewsFragment : Fragment() {
     lateinit var itemAdapter : NewsRecyclerAdapter
     private var _binding: FragmentNewsBinding? = null
-    private lateinit var emptyListTv : TextView
+    private lateinit var noDataFoundTV : TextView
     private  lateinit var newsViewModel: NewsViewModel
     lateinit var progressBar: ProgressBar // Import ProgressBar if not done already
 
@@ -27,7 +27,6 @@ class NewsFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-
     inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -43,18 +42,21 @@ class NewsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         newsViewModel = ViewModelProvider(this).get(NewsViewModel::class.java)
 
+        //Init progressBar and show
         progressBar = view.findViewById(R.id.progressBarNews)
         showProgressBar()
 
-        emptyListTv = view.findViewById<TextView>(R.id.tvNewsFound)
-        emptyListTv.visibility = View.GONE
+        //Init Text View In case no data is retrieved from API
+        noDataFoundTV = view.findViewById<TextView>(R.id.tvNewsFound)
+        //Set is as gone initially and set to visible in case there's no data
+        noDataFoundTV.visibility = View.GONE
 
         newsViewModel.newsList.observe(viewLifecycleOwner) { newsList ->
             if (newsList.isEmpty() || newsList == null) {
-                emptyListTv.visibility = View.VISIBLE
+                noDataFoundTV.visibility = View.VISIBLE
             }
             else{
-                emptyListTv.visibility = View.GONE
+                noDataFoundTV.visibility = View.GONE
                 itemAdapter = NewsRecyclerAdapter(newsList)
                 val recyclerView: RecyclerView = view.findViewById(R.id.newsrecyleview)
                 recyclerView.layoutManager = LinearLayoutManager(recyclerView.context)
@@ -62,7 +64,7 @@ class NewsFragment : Fragment() {
             }
             hideProgressBar()
         }
-        // Set up the callback
+
         val callback = object : OnBackPressedCallback(true ) {
             override fun handleOnBackPressed() {
                 // Handle the back button event

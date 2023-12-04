@@ -15,6 +15,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         // Remove the action bar
         supportActionBar?.hide()
 
@@ -43,6 +44,8 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
     }
 
+
+    //Set logic to implement backTrack on click
     override fun onBackPressed() {
         val fragmentManager = supportFragmentManager
 
